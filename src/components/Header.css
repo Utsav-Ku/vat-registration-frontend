@@ -1,0 +1,57 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.left-logo {
+  width: 66px;
+  height: 105px;
+  margin-right: 20px;
+}
+
+.nic-container {
+  display: flex;
+  align-items: center;
+}
+
+.nic-logo {
+  max-height: 88px;
+  width: 189px; /* Added px unit */
+  margin-right: 10px;
+}
+
+.nic-text h2 {
+  margin: 0;
+  line-height: 1.2;
+  color: #337ab7;
+  font-weight: bold;
+}
+
+.hindi-text {
+  font-size: 36px;
+}
+
+.english-text {
+  font-size: 36px;
+}
+
+/* ✅ Responsive: Hide text on smaller screens */
+@media (max-width: 768px) {
+  .nic-text {
+    display: none;
+  }
+
+  .left-logo {
+    width: 50px;
+    height: 80px;
+  }
+
+  .nic-logo {
+    max-height: 70px;
+    width: auto;
+  }
+}
