@@ -24,12 +24,33 @@ const PartAForm = () => {
     email: "",
   });
 
+  const [pinError, setPinError] = useState("");
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Special handling for PIN code field
+    if (name === "pin") {
+      if (/^\d{0,6}$/.test(value)) {
+        setForm({ ...form, pin: value });
+        if (value.length === 6 || value.length === 0) {
+          setPinError("");
+        } else {
+          setPinError("PIN Code is 6 Digit");
+        }
+      }
+      return;
+    }
+
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (form.pin.length !== 6) {
+      setPinError("PIN Code is 6 Digit");
+      return;
+    }
     alert("Form submitted!\n" + JSON.stringify(form, null, 2));
   };
 
@@ -60,7 +81,7 @@ const PartAForm = () => {
               >
                 <option value="">Select</option>
                 <option value="VOLUNTARY">VOLUNTARY</option>
-                <option value="COMPULSORY">COMPULSORY</option>
+                <option value="MANDATORY">MANDATORY</option>
               </select>
             </div>
           </div>
@@ -79,11 +100,61 @@ const PartAForm = () => {
                 required
               >
                 <option value="">Select</option>
-                <option value="HeadQuarter">HeadQuarter</option>
-                <option value="Branch">Branch</option>
+                <option value="Supdt.of Taxes,Ambassa">
+                  Supdt.of Taxes,Ambassa
+                </option>
+                <option value="Supdt.of Taxes,Belonia">
+                  Supdt.of Taxes,Belonia
+                </option>
+                <option value="Supdt.of Taxes,Bishalgarh">
+                  Supdt.of Taxes,Bishalgarh
+                </option>
+                <option value="Supdt.of Taxes,Charge-I">
+                  Supdt.of Taxes,Charge-I
+                </option>
+                <option value="Supdt.of Taxes,Charge-II">
+                  Supdt.of Taxes,Charge-II
+                </option>
+                <option value="Supdt.of Taxes,Charge-III">
+                  Supdt.of Taxes,Charge-III
+                </option>
+                <option value="Supdt.of Taxes,Charge-IV">
+                  Supdt.of Taxes,Charge-IV
+                </option>
+                <option value="Supdt.of Taxes,Charge-V">
+                  Supdt.of Taxes,Charge-V
+                </option>
+                <option value="Supdt.of Taxes,Charge-VI">
+                  Supdt.of Taxes,Charge-VI
+                </option>
+                <option value="Supdt.of Taxes,Charge-VII">
+                  Supdt.of Taxes,Charge-VII
+                </option>
+                <option value="Supdt.of Taxes,Charge-VIII">
+                  Supdt.of Taxes,Charge-VIII
+                </option>
+                <option value="Supdt.of Taxes,Dharmanagar">
+                  Supdt.of Taxes,Dharmanagar
+                </option>
+                <option value="Supdt.of Taxes,Kailashahar">
+                  Supdt.of Taxes,Kailashahar
+                </option>
+                <option value="Supdt.of Taxes,Khowai">
+                  Supdt.of Taxes,Khowai
+                </option>
+                <option value="Supdt.of Taxes,Sonamura">
+                  Supdt.of Taxes,Sonamura
+                </option>
+                <option value="Supdt.of Taxes,Teliamura">
+                  Supdt.of Taxes,Teliamura
+                </option>
+                <option value="Supdt.of Taxes,Udaipur">
+                  Supdt.of Taxes,Udaipur
+                </option>
               </select>
+
               <a
-                href="https://vatoffice.example.com"
+                href="https://tripuravat.nic.in/Tripuraereg/Officesearch.aspx"
                 className="ms-2"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -109,9 +180,36 @@ const PartAForm = () => {
               >
                 <option value="">Select</option>
                 <option value="Proprietary">Proprietary</option>
-                <option value="Partnership">Partnership</option>
-                <option value="Company">Company</option>
-                {/* Add more as needed */}
+                <option value="Unregistered Partnership">
+                  Unregistered Partnership
+                </option>
+                <option value="Registered Partnership">
+                  Registered Partnership
+                </option>
+                <option value="Private Limited Company">
+                  Private Limited Company
+                </option>
+                <option value="Public Limited Company">
+                  Public Limited Company
+                </option>
+                <option value="Public Sector Undertaking">
+                  Public Sector Undertaking
+                </option>
+                <option value="Statutory Body">Statutory Body</option>
+                <option value="Co-operative Society">
+                  Co-operative Society
+                </option>
+                <option value="Trust">Trust</option>
+                <option value="Hindu Undivided Family(HUF)">
+                  Hindu Undivided Family(HUF)
+                </option>
+                <option value="Other">Other</option>
+                <option value="Government Department">
+                  Government Department
+                </option>
+                <option value="Association of Persons">
+                  Association of Persons
+                </option>
               </select>
             </div>
           </div>
@@ -287,7 +385,14 @@ const PartAForm = () => {
               >
                 <option value="">Select</option>
                 <option value="Dhalai">Dhalai</option>
-                {/* Add more districts as needed */}
+                <option value="Gomati">Gomati</option>
+                <option value="Khowai">Khowai</option>
+                <option value="North Tripura">North Tripura</option>
+                <option value="Outside Tripura">Outside Tripura</option>
+                <option value="Sepahijala">Sepahijala</option>
+                <option value="South Tripura">South Tripura</option>
+                <option value="Unakoti">Unakoti</option>
+                <option value="West Tripura">West Tripura</option>
               </select>
             </div>
             <label className="col-6 col-md-2 col-form-label fw-bold">
@@ -300,8 +405,18 @@ const PartAForm = () => {
                 name="pin"
                 value={form.pin}
                 onChange={handleChange}
+                maxLength={6}
+                pattern="\d{6}"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="Enter 6-digit PIN Code"
                 required
               />
+              {pinError && (
+                <div style={{ color: "red", fontSize: "0.95em", marginTop: 2 }}>
+                  {pinError}
+                </div>
+              )}
             </div>
           </div>
           <div className="mb-3 row">
@@ -319,6 +434,8 @@ const PartAForm = () => {
                 <option value="Owned">Owned</option>
                 <option value="Rented">Rented</option>
                 <option value="Leased">Leased</option>
+                <option value="Rent-Free">Rent-Free</option>
+                <option value="Others">Others</option>
               </select>
             </div>
           </div>
