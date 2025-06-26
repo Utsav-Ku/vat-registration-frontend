@@ -26,8 +26,8 @@ const Home = () => {
                     <hr />
 
                     <p>
-                        Enter Your UGAAC ID and Password to login and continue with your application. <br />
-                        लॉगिन करने के लिए अपना UGAAC ID और पासवर्ड दर्ज करें और अपना आवेदन जारी रखें।
+                        Enter Your Application No. and Password to login and continue with your application. <br />
+                        लॉगिन करने के लिए अपना Application No. और पासवर्ड दर्ज करें और अपना आवेदन जारी रखें।
                     </p>
 
                     <div style={{ marginTop: '100px'}}>
