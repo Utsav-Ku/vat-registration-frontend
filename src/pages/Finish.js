@@ -75,7 +75,7 @@ const Finish = () => {
                         <button
                             className="btn px-4 fw-bold"
                             style={{ backgroundColor: '#1E59A8', color: 'white', width: '120px' }}
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate('/upload-document')}
                         >
                             Prev
                         </button>
