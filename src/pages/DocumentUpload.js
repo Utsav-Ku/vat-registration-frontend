@@ -10,7 +10,7 @@ const DocumentUpload = () => {
     const [file, setFile] = useState(null);
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
-    const maxFileSize = 500 * 1024; // 500KB
+    const maxFileSize = 500 * 1024;
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
