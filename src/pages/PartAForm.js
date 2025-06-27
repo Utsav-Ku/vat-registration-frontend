@@ -62,14 +62,15 @@ const PartAForm = () => {
           className="border p-4 rounded shadow bg-white"
           onSubmit={handleSubmit}
         >
-          <h5 className="fw-bold mb-3" style={{ color: "#2282C1" }}>
-            Part(A)
-          </h5>
+          <div className="fw-bold text-primary text-center mb-4" style={{ fontSize: "1.5rem", letterSpacing: "0.5px" }}>
+            <i className="bi bi-pencil-square me-2"></i>
+            Part (A)
+          </div>
 
           {/* Type of Registration */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Type of Registration*
+              Type of Registration<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <select
@@ -89,7 +90,7 @@ const PartAForm = () => {
           {/* Select Office */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Select Office*
+              Select Office<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8 d-flex align-items-center">
               <select
@@ -168,7 +169,7 @@ const PartAForm = () => {
           {/* Business Status */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Business Status/Constitution of Business*
+              Business Status/Constitution of Business<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <select
@@ -217,7 +218,7 @@ const PartAForm = () => {
           {/* Applicant Name */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Name of Applicant Dealer*
+              Name of Applicant Dealer<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
@@ -267,7 +268,7 @@ const PartAForm = () => {
               />
             </div>
             <div className="col-12 col-md-4 d-flex align-items-center mt-2 mt-md-0">
-              <span className="fw-bold me-2">Sex (M/F)*</span>
+              <span className="fw-bold me-2">Sex (M/F)<span style={{ color: "#dc3545" }}>*</span></span>
               <input
                 type="radio"
                 name="gender"
@@ -293,7 +294,7 @@ const PartAForm = () => {
           {/* Trading Name */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Trading Name*
+              Trading Name<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
@@ -330,7 +331,7 @@ const PartAForm = () => {
           </h6>
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Room/Flat/Premises No.*
+              Room/Flat/Premises No.<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
@@ -373,7 +374,7 @@ const PartAForm = () => {
           </div>
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              District*
+              District<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-6 col-md-4">
               <select
@@ -395,8 +396,8 @@ const PartAForm = () => {
                 <option value="West Tripura">West Tripura</option>
               </select>
             </div>
-            <label className="col-6 col-md-2 col-form-label fw-bold">
-              PIN Code*
+            <label className="col-6 col-md-2 col-form-label fw-bold mb-0">
+                PIN Code<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-2">
               <input
@@ -441,10 +442,9 @@ const PartAForm = () => {
           </div>
 
           {/* Instructional Note for Additional Places */}
-          <div className="alert alert-info my-4" style={{ fontSize: "1rem" }}>
-            If you have more than one place of
-            business/factory/godown/warehouse, fill up form for additional
-            business places.
+          <div className="p-3 my-4" style={{ backgroundColor: "#E2E3E5", borderRadius: "6px", color: "#000", lineHeight: "1.5" }}>
+            <i className="bi bi-info-circle-fill me-2 text-primary"></i>
+            If you have more than one place of business, factory, godown, or warehouse, please fill the form for additional business places.
           </div>
 
           {/* Contact Details */}
