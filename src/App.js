@@ -7,7 +7,7 @@ import Finish from "./pages/Finish.js";
 import DocumentUpload from "./pages/DocumentUpload.js";
 import PartAForm from "./pages/PartAForm.js";
 import BusinessPartnerDetails from "./pages/businessPartnerDetails.js";
-
+import PartCForm from "./pages/PartCForm.js";
 function App() {
   return (
     <div className="App">
@@ -19,6 +19,7 @@ function App() {
         <Route path="/finish" element={<Finish />} />
         <Route path="/upload-document" element={<DocumentUpload />}/>
         <Route path="/part-a" element={<PartAForm />} />
+        <Route path="/part-c" element={<PartCForm />} />
         <Route path="/business-partner-details" element={<BusinessPartnerDetails />} />
       </Routes>
     </div>
