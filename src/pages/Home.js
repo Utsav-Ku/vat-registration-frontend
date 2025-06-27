@@ -68,7 +68,7 @@ const Home = () => {
 
                     <div style={{ marginTop: '147px'}}>
                         <button 
-                        onClick={() => navigate('/upload-document')}
+                        onClick={() => navigate('/part-a')}
                         className="btn w-100" 
                         style={{ backgroundColor: '#1E59A8', color: 'white' }}
                         >
