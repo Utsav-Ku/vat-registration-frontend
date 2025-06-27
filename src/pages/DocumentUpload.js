@@ -154,7 +154,7 @@ const DocumentUpload = () => {
                         <button
                             className="btn fw-bold px-4"
                             style={{ backgroundColor: '#1E59A8', color: 'white', width: '200px' }}
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate('/business-partner-details')}
                         >
                             Prev
                         </button>
