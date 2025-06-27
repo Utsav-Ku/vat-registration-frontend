@@ -4,10 +4,9 @@ import SignUp from "./pages/SignIn.js";
 import ForgotPassword from "./pages/ForgotPassword.js";
 import ForgotId from "./pages/ForgotId.js";
 import Finish from "./pages/Finish.js";
-
 import DocumentUpload from "./pages/DocumentUpload.js";
 import PartAForm from "./pages/PartAForm.js";
-
+import BusinessPartnerDetails from "./pages/businessPartnerDetails.js";
 
 function App() {
   return (
@@ -20,6 +19,7 @@ function App() {
         <Route path="/finish" element={<Finish />} />
         <Route path="/upload-document" element={<DocumentUpload />}/>
         <Route path="/part-a" element={<PartAForm />} />
+        <Route path="/business-partner-details" element={<BusinessPartnerDetails />} />
       </Routes>
     </div>
   );
