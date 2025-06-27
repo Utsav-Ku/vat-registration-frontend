@@ -23,7 +23,7 @@ function App() {
         <Route path="/upload-document" element={<DocumentUpload />}/>
         <Route path="/part-a" element={<PartAForm />} />
         <Route path="/part-c" element={<PartCForm />} />
-        <Route path="/bank-info" element={<BankInfo />} />
+        <Route path="/bank-inform" element={<BankInfo />} />
         <Route path="/business-partner-details" element={<BusinessPartnerDetails />} />
       </Routes>
     </div>
