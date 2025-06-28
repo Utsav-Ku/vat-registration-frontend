@@ -15,7 +15,6 @@ const BusinessPartnerDetails = () => {
   const [presentAddress, setPresentAddress] = useState('');
   const [locality, setLocality] = useState('');
   const [village, setVillage] = useState('');
-  const [permanentAddress, setPermanentAddress] = useState('');
   const [tel, setTel] = useState('');
   const [fax, setFax] = useState('');
   const [email, setEmail] = useState('');

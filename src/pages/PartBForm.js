@@ -27,15 +27,15 @@ const COMMODITIES = [
 const PartBForm = () => {
   const navigate = useNavigate();
 
-  // Example: get ackNo/otp from localStorage or context
-  const ackNo = localStorage.getItem("ackNo");
-  const otp = localStorage.getItem("otp");
+  // // Example: get ackNo/otp from localStorage or context
+  // const ackNo = localStorage.getItem("ackNo");
+  // const otp = localStorage.getItem("otp");
 
-  useEffect(() => {
-    if (!ackNo || !otp) {
-      navigate("/signin"); // or your ACK/OTP entry page
-    }
-  }, [ackNo, otp, navigate]);
+  // useEffect(() => {
+  //   if (!ackNo || !otp) {
+  //     navigate("/signin"); // or your ACK/OTP entry page
+  //   }
+  // }, [ackNo, otp, navigate]);
 
   // State for form fields
   const [resi, setResi] = useState({
