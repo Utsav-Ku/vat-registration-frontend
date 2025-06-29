@@ -25,7 +25,7 @@ function App() {
         <Route path="/part-a" element={<PartAForm />} />
         <Route path="/part-b" element={<PartBForm />} />
         <Route path="/part-c" element={<PartCForm />} />
-        <Route path="/bank-inform" element={<BankInfo />} />
+        <Route path="/bank-info" element={<BankInfo />} />
         <Route path="/business-partner-details" element={<BusinessPartnerDetails />} />
       </Routes>
     </div>

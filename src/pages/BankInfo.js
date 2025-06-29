@@ -199,7 +199,7 @@ const BankInfo = () => {
                 type="button"
                 className="btn px-4"
                 style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }}
-                onClick={() => navigate('/previous-page')}
+                onClick={() => navigate('/part-c')}
               >
                 Previous
               </button>
