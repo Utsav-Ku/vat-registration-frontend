@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const PartAForm = () => {
   const [form, setForm] = useState({
@@ -25,6 +26,8 @@ const PartAForm = () => {
   });
 
   const [pinError, setPinError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -508,6 +511,7 @@ const PartAForm = () => {
           {/* Save & Continue */}
           <div className="d-flex justify-content-center mt-4">
             <button
+              onClick={() => navigate('/part-b')}
               type="submit"
               className="btn px-4"
               style={{
