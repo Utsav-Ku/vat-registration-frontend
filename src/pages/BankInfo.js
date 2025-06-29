@@ -152,6 +152,7 @@ const BankInfo = () => {
                 <button
                   className="btn"
                   type="submit"
+                 // onClick={handleAdd}
                   style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '125px' }}
                 >
                   [+] Add
@@ -198,36 +199,47 @@ const BankInfo = () => {
           </form> 
 
           <h6 className="fw-bold mb-1 mt-2" style={{ color: 'rgb(34, 130, 193)' }}>List of Bank Accounts</h6>
-             <hr className="my-1" />
-          <table className="table table-bordered mt-4">
-            <thead className="table-primary text-center">
-              <tr>
-                <th>Select</th>
-                <th>Bank</th>
-                <th>Branch</th>
-                <th>AccountNumber</th>
-                <th>TypeOfAccount</th>
-                <th>BranchCode</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bankAccounts.map((acc, i) => (
-                <tr key={i} className="text-center align-middle">
-                  <td>
-                    <button className="btn btn-link p-0" onClick={() => handleSelect(i)}>Select</button>
-                  </td>
-                  <td>{acc.bankName}</td>
-                  <td>{acc.branchName}</td>
-                  <td>{acc.accountNumber}</td>
-                  <td>{acc.accountType}</td>
-                  <td>{acc.branchCode}</td>
-                </tr>
-              ))}
-              {bankAccounts.length === 0 && (
-                <tr><td colSpan={6} className="text-center">No accounts added yet.</td></tr>
-              )}
-            </tbody>
-          </table>
+           <hr className="my-1" />
+              {bankAccounts.length === 0 ? (
+  <div className="p-3 text-center text-muted fade-in mt-4" 
+       style={{ backgroundColor: 'rgb(248, 249, 250)', borderRadius: '6px' }}>
+    <i className="bi bi-folder-x me-2"></i>
+    No Bank Accounts Added Yet.
+  </div>
+) : (
+  <table className="table table-bordered mt-4 fade-in">
+    <thead className="table-primary text-center">
+      <tr>
+        <th>Select</th>
+        <th>Bank</th>
+        <th>Branch</th>
+        <th>AccountNumber</th>
+        <th>TypeOfAccount</th>
+        <th>BranchCode</th>
+      </tr>
+    </thead>
+    <tbody>
+      {bankAccounts.map((acc, i) => (
+        <tr key={i} className="text-center align-middle">
+                   <td className="text-center">
+    <button
+      className="btn btn-outline-primary btn-sm"
+      onClick={() => handleSelect(i)}
+      style={{ width: "80px" }} 
+    >
+      Select
+    </button>
+  </td>
+          <td>{acc.bankName}</td>
+          <td>{acc.branchName}</td>
+          <td>{acc.accountNumber}</td>
+          <td>{acc.accountType}</td>
+          <td>{acc.branchCode}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
 
           <div className="d-flex justify-content-center mt-4">
             <div className="d-flex" style={{ gap: '30px' }}>
