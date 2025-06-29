@@ -3,21 +3,21 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 
 const BankInfo = () => {
-  const [bankName, setBankName] = useState("Agartala Cooperative Urban Bank Ltd");
-  const [branchName, setBranchName] = useState("AGARTALA");
-  const [accountNumber, setAccountNumber] = useState("1234567890");
-  const [branchCode, setBranchCode] = useState("001");
-  const [accountType, setAccountType] = useState("Savings Account");
+  const [bankName, setBankName] = useState("");
+  const [branchName, setBranchName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [branchCode, setBranchCode] = useState("");
+  const [accountType, setAccountType] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [bankAccounts, setBankAccounts] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const resetForm = () => {
-    setBankName("Agartala Cooperative Urban Bank Ltd");
-    setBranchName("AGARTALA");
-    setAccountNumber("1234567890");
-    setBranchCode("001");
-    setAccountType("Savings Account");
+    setBankName("");
+    setBranchName("");
+    setAccountNumber("");
+    setBranchCode("");
+    setAccountType("");
     setSelectedIndex(null);
   };
 
@@ -73,32 +73,66 @@ const BankInfo = () => {
             <div className="row mb-3 align-items-center">
               <label className="col-sm-3 col-form-label fw-bold">Bank Name<span className="text-danger">*</span></label>
               <div className="col-sm-9">
-                <select className="form-select" value={bankName} onChange={(e) => setBankName(e.target.value)} required>
-                  <option>Agartala Cooperative Urban Bank Ltd</option>
-                  <option>State Bank of India</option>
-                  <option>HDFC Bank</option>
-                </select>
+              <select className="form-select" value={bankName} onChange={(e) => setBankName(e.target.value)}  required>
+                 <option value="" disabled>
+                 Select Your Bank
+                 </option>
+<option>Agartala Cooperative Urban Bank Ltd.</option>
+<option>Allahabad Bank</option>
+<option>Andhra Bank</option>
+<option>Axis Bank</option>
+<option>Bank of Baroda</option>
+<option>Bank of India</option>
+<option>Bank of Maharashtra</option>
+<option>Canara Bank</option>
+<option>Central Bank of India</option>
+<option>CITIBANK</option>
+<option>Corporation Bank</option>
+<option>Dena Bank</option>
+<option>FEDERAL BANK</option>
+<option>HDFC Bank</option>
+<option>Hongkong Shanghai Banking Corp.Ltd.</option>
+<option>ICICI Bank</option>
+<option>IDBI Bank</option>
+<option>Indian Bank</option>
+<option>Indian Overseas Bank</option>
+<option>Indus Bank</option>
+<option>Oriental Bank of Commerce</option>
+<option>Punjab and Sind Bank</option>
+<option>Punjab National Bank</option>
+<option>South Indian Bank Ltd.</option>
+<option>Standard Chartered Bank</option>
+<option>State Bank of India</option>
+<option>Syndicate Bank</option>
+<option>Tripura Gramin Bank</option>
+<option>Tripura State Co-operative Bank Ltd.</option>
+<option>Union Bank of India</option>
+<option>United Bank of India</option>
+<option>United Commercial Bank</option>
+<option>Vijaya Bank</option>
+<option>Yes Bank</option>
+                          </select>
               </div>
             </div>
 
             <div className="row mb-3 align-items-center">
               <label className="col-sm-3 col-form-label fw-bold">Branch Name, Address<span className="text-danger">*</span></label>
               <div className="col-sm-9">
-                <input type="text" className="form-control" value={branchName} onChange={(e) => setBranchName(e.target.value)} required />
+                <input type="text" placeholder="Enter Branch Name" className="form-control" value={branchName} onChange={(e) => setBranchName(e.target.value)} required />
               </div>
             </div>
 
             <div className="row mb-3 align-items-center">
               <label className="col-sm-3 col-form-label fw-bold">Account Number<span className="text-danger">*</span></label>
               <div className="col-sm-9">
-                <input type="text" className="form-control" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
+                <input type="text" placeholder="Enter Account Number" className="form-control" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
               </div>
             </div>
 
             <div className="row mb-3 align-items-center">
               <label className="col-sm-3 col-form-label fw-bold">Branch Code</label>
               <div className="col-sm-9">
-                <input type="text" className="form-control" value={branchCode} onChange={(e) => setBranchCode(e.target.value)} />
+                <input type="text" placeholder="Enter Branch Code" className="form-control" value={branchCode} onChange={(e) => setBranchCode(e.target.value)} />
               </div>
             </div>
 
@@ -106,6 +140,7 @@ const BankInfo = () => {
               <label className="col-sm-3 col-form-label fw-bold">Type of Account</label>
               <div className="col-sm-9">
                 <select className="form-select" value={accountType} onChange={(e) => setAccountType(e.target.value)}>
+                  <option value="" disabled>Select Your Account Type </option>
                   <option>Savings Account</option>
                   <option>Current Account</option>
                 </select>
@@ -160,10 +195,11 @@ const BankInfo = () => {
                 ✅ Details Inserted Successfully !!
               </div>
             )}
-          </form>
+          </form> 
 
-          <h6 className="fw-bold mb-3 mt-4">List of Bank Accounts</h6>
-          <table className="table table-bordered">
+          <h6 className="fw-bold mb-1 mt-2" style={{ color: 'rgb(34, 130, 193)' }}>List of Bank Accounts</h6>
+             <hr className="my-1" />
+          <table className="table table-bordered mt-4">
             <thead className="table-primary text-center">
               <tr>
                 <th>Select</th>
