@@ -7,6 +7,7 @@ import Finish from "./pages/Finish.js";
 import DocumentUpload from "./pages/DocumentUpload.js";
 import PartAForm from "./pages/PartAForm.js";
 import BusinessPartnerDetails from "./pages/businessPartnerDetails.js";
+import PartBForm from "./pages/PartBForm.js";
 
 function App() {
   return (
@@ -16,10 +17,11 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/forgot-id" element={<ForgotId />} />
-        <Route path="/finish" element={<Finish />} />
-        <Route path="/upload-document" element={<DocumentUpload />}/>
         <Route path="/part-a" element={<PartAForm />} />
+        <Route path="/part-b" element={<PartBForm />} />
         <Route path="/business-partner-details" element={<BusinessPartnerDetails />} />
+        <Route path="/upload-document" element={<DocumentUpload />}/>
+        <Route path="/finish" element={<Finish />} />
       </Routes>
     </div>
   );
