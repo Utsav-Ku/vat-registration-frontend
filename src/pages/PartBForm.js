@@ -5,7 +5,7 @@ import {
   districtsByState,
   statutoryAuthorities,
   commodities,
-} from "../constants/dropDowns.js";
+} from "../contants/dropdowns.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -83,6 +83,7 @@ const PartBForm = () => {
 
     setSuccessMessage("Details Inserted Successfully !!");
     setTimeout(() => setSuccessMessage(""), 3000);
+    navigate("/part-c");
   };
 
   const handleAddCommodity = () => {
@@ -372,7 +373,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Economic Activity Code
+              Economic Activity Code<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8 d-flex flex-wrap">
               {["Manufacturer", "Trader", "Seller", "Reseller", "Importer"].map(
@@ -484,7 +485,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Date of First Taxable Sale (DD/MM/YYYY)
+              Date of First Taxable Sale (DD/MM/YYYY)<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-4">
               <input
@@ -500,7 +501,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Do you wish to register for VAT, Composition Scheme (COT)..?
+              Do you wish to register for VAT, Composition Scheme (COT)..?<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <select
@@ -518,7 +519,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Estimated Turnover for 12 Months/Quarters
+              Estimated Turnover for 12 Months/Quarters<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
