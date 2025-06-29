@@ -576,6 +576,7 @@ const PartBForm = () => {
                 Prev
               </button>
               <button 
+                onClick={() => navigate('/part-c')}
                 type="submit" 
                 className="btn px-4"
                 style={{ backgroundColor: "#1E59A8", color: "white" }}
