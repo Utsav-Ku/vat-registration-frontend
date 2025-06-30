@@ -13,6 +13,55 @@ export const districtsByState = {
   ],
 };
 
+export const registrationTypes = [
+  "VOLUNTARY",
+  "MANDATORY"
+];
+
+export const offices = [
+  "Supdt.of Taxes,Ambassa",
+  "Supdt.of Taxes,Belonia",
+  "Supdt.of Taxes,Bishalgarh",
+  "Supdt.of Taxes,Charge-I",
+  "Supdt.of Taxes,Charge-II",
+  "Supdt.of Taxes,Charge-III",
+  "Supdt.of Taxes,Charge-IV",
+  "Supdt.of Taxes,Charge-V",
+  "Supdt.of Taxes,Charge-VI",
+  "Supdt.of Taxes,Charge-VII",
+  "Supdt.of Taxes,Charge-VIII",
+  "Supdt.of Taxes,Dharmanagar",
+  "Supdt.of Taxes,Kailashahar",
+  "Supdt.of Taxes,Khowai",
+  "Supdt.of Taxes,Sonamura",
+  "Supdt.of Taxes,Teliamura",
+  "Supdt.of Taxes,Udaipur"
+];
+
+export const businessStatuses = [
+  "Proprietary",
+  "Unregistered Partnership",
+  "Registered Partnership",
+  "Private Limited Company",
+  "Public Limited Company",
+  "Public Sector Undertaking",
+  "Statutory Body",
+  "Co-operative Society",
+  "Trust",
+  "Hindu Undivided Family(HUF)",
+  "Other",
+  "Government Department",
+  "Association of Persons"
+];
+
+export const occupancies = [
+  "Owned",
+  "Rented",
+  "Leased",
+  "Rent-Free",
+  "Others"
+];
+
 export const statutoryAuthorities = [
   "REGISTER OF COMPANIES",
   "REGISTER OF FIRMS",
