@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import {
+  registrationTypes,
+  offices,
+  businessStatuses,
+  districtsByState,
+  occupancies
+} from "../contants/dropdowns";
 
 const PartAForm = () => {
   const [form, setForm] = useState({
@@ -26,13 +33,11 @@ const PartAForm = () => {
   });
 
   const [pinError, setPinError] = useState("");
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Special handling for PIN code field
     if (name === "pin") {
       if (/^\d{0,6}$/.test(value)) {
         setForm({ ...form, pin: value });
@@ -54,7 +59,8 @@ const PartAForm = () => {
       setPinError("PIN Code is 6 Digit");
       return;
     }
-    alert("Form submitted!\n" + JSON.stringify(form, null, 2));
+    //save logic yaha pe likho( send  PartAForm data to our backend server (for example, using `fetch` or `axios` to POST the data to an API endpoint))
+    navigate("/part-b");
   };
 
   return (
@@ -84,8 +90,9 @@ const PartAForm = () => {
                 required
               >
                 <option value="">Select</option>
-                <option value="VOLUNTARY">VOLUNTARY</option>
-                <option value="MANDATORY">MANDATORY</option>
+                {registrationTypes.map((type) => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -104,59 +111,10 @@ const PartAForm = () => {
                 required
               >
                 <option value="">Select</option>
-                <option value="Supdt.of Taxes,Ambassa">
-                  Supdt.of Taxes,Ambassa
-                </option>
-                <option value="Supdt.of Taxes,Belonia">
-                  Supdt.of Taxes,Belonia
-                </option>
-                <option value="Supdt.of Taxes,Bishalgarh">
-                  Supdt.of Taxes,Bishalgarh
-                </option>
-                <option value="Supdt.of Taxes,Charge-I">
-                  Supdt.of Taxes,Charge-I
-                </option>
-                <option value="Supdt.of Taxes,Charge-II">
-                  Supdt.of Taxes,Charge-II
-                </option>
-                <option value="Supdt.of Taxes,Charge-III">
-                  Supdt.of Taxes,Charge-III
-                </option>
-                <option value="Supdt.of Taxes,Charge-IV">
-                  Supdt.of Taxes,Charge-IV
-                </option>
-                <option value="Supdt.of Taxes,Charge-V">
-                  Supdt.of Taxes,Charge-V
-                </option>
-                <option value="Supdt.of Taxes,Charge-VI">
-                  Supdt.of Taxes,Charge-VI
-                </option>
-                <option value="Supdt.of Taxes,Charge-VII">
-                  Supdt.of Taxes,Charge-VII
-                </option>
-                <option value="Supdt.of Taxes,Charge-VIII">
-                  Supdt.of Taxes,Charge-VIII
-                </option>
-                <option value="Supdt.of Taxes,Dharmanagar">
-                  Supdt.of Taxes,Dharmanagar
-                </option>
-                <option value="Supdt.of Taxes,Kailashahar">
-                  Supdt.of Taxes,Kailashahar
-                </option>
-                <option value="Supdt.of Taxes,Khowai">
-                  Supdt.of Taxes,Khowai
-                </option>
-                <option value="Supdt.of Taxes,Sonamura">
-                  Supdt.of Taxes,Sonamura
-                </option>
-                <option value="Supdt.of Taxes,Teliamura">
-                  Supdt.of Taxes,Teliamura
-                </option>
-                <option value="Supdt.of Taxes,Udaipur">
-                  Supdt.of Taxes,Udaipur
-                </option>
+                {offices.map((office) => (
+                  <option key={office} value={office}>{office}</option>
+                ))}
               </select>
-
               <a
                 href="https://tripuravat.nic.in/Tripuraereg/Officesearch.aspx"
                 className="ms-2"
@@ -183,37 +141,9 @@ const PartAForm = () => {
                 required
               >
                 <option value="">Select</option>
-                <option value="Proprietary">Proprietary</option>
-                <option value="Unregistered Partnership">
-                  Unregistered Partnership
-                </option>
-                <option value="Registered Partnership">
-                  Registered Partnership
-                </option>
-                <option value="Private Limited Company">
-                  Private Limited Company
-                </option>
-                <option value="Public Limited Company">
-                  Public Limited Company
-                </option>
-                <option value="Public Sector Undertaking">
-                  Public Sector Undertaking
-                </option>
-                <option value="Statutory Body">Statutory Body</option>
-                <option value="Co-operative Society">
-                  Co-operative Society
-                </option>
-                <option value="Trust">Trust</option>
-                <option value="Hindu Undivided Family(HUF)">
-                  Hindu Undivided Family(HUF)
-                </option>
-                <option value="Other">Other</option>
-                <option value="Government Department">
-                  Government Department
-                </option>
-                <option value="Association of Persons">
-                  Association of Persons
-                </option>
+                {businessStatuses.map((status) => (
+                  <option key={status} value={status}>{status}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -237,10 +167,7 @@ const PartAForm = () => {
 
           {/* Father's/Mother's/Husband's Name */}
           <div className="mb-3 row">
-            <label
-              className="col-12 col-md-4 col-form-label fw-bold"
-              style={{ whiteSpace: "normal" }}
-            >
+            <label className="col-12 col-md-4 col-form-label fw-bold" style={{ whiteSpace: "normal" }}>
               Father's/Mother's/Husband's Name
             </label>
             <div className="col-12 col-md-8">
@@ -388,15 +315,9 @@ const PartAForm = () => {
                 required
               >
                 <option value="">Select</option>
-                <option value="Dhalai">Dhalai</option>
-                <option value="Gomati">Gomati</option>
-                <option value="Khowai">Khowai</option>
-                <option value="North Tripura">North Tripura</option>
-                <option value="Outside Tripura">Outside Tripura</option>
-                <option value="Sepahijala">Sepahijala</option>
-                <option value="South Tripura">South Tripura</option>
-                <option value="Unakoti">Unakoti</option>
-                <option value="West Tripura">West Tripura</option>
+                {districtsByState.Tripura.map((district) => (
+                  <option key={district} value={district}>{district}</option>
+                ))}
               </select>
             </div>
             <label className="col-6 col-md-2 col-form-label fw-bold mb-0">
@@ -435,11 +356,9 @@ const PartAForm = () => {
                 onChange={handleChange}
               >
                 <option value="">Select</option>
-                <option value="Owned">Owned</option>
-                <option value="Rented">Rented</option>
-                <option value="Leased">Leased</option>
-                <option value="Rent-Free">Rent-Free</option>
-                <option value="Others">Others</option>
+                {occupancies.map((occ) => (
+                  <option key={occ} value={occ}>{occ}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -511,7 +430,6 @@ const PartAForm = () => {
           {/* Save & Continue */}
           <div className="d-flex justify-content-center mt-4">
             <button
-              onClick={() => navigate('/part-b')}
               type="submit"
               className="btn px-4"
               style={{
