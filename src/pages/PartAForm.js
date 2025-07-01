@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import {
@@ -62,6 +62,10 @@ const PartAForm = () => {
     //save logic yaha pe likho( send  PartAForm data to our backend server (for example, using `fetch` or `axios` to POST the data to an API endpoint))
     navigate("/part-b");
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>

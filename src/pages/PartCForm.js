@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const PartCForm = () => {
   const navigate = useNavigate();
   const [isCitizen, setIsCitizen] = useState(true);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -14,6 +15,11 @@ const PartCForm = () => {
     }
     navigate("/bank-info");
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <>
       <Header />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   states,
@@ -6,6 +6,7 @@ import {
   statutoryAuthorities,
   commodities,
 } from "../contants/dropdowns.js";
+import Header from "../components/Header.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -46,24 +47,24 @@ const PartBForm = () => {
       return;
     }
 
-    // if (
-    //   !resStreet ||
-    //   !resCity ||
-    //   !resPincode ||
-    //   !permStreet ||
-    //   !permCity ||
-    //   !permPincode ||
-    //   !saleDate ||
-    //   !turnover ||
-    //   !authority ||
-    //   !econActivity ||
-    //   !commodity ||
-    //   !vatType ||
-    //   !returnFreq
-    // ) {
-    //   alert("Please fill all required fields marked with *");
-    //   return;
-    // }
+    if (
+      !resStreet ||
+      !resCity ||
+      !resPincode ||
+      !permStreet ||
+      !permCity ||
+      !permPincode ||
+      !saleDate ||
+      !turnover ||
+      !authority ||
+      !econActivity ||
+      !commodity ||
+      !vatType ||
+      !returnFreq
+    ) {
+      alert("Please fill all required fields marked with *");
+      return;
+    }
 
     const newRow = {
       resStreet,
@@ -114,8 +115,13 @@ const PartBForm = () => {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
+      <Header />
       <div className="container my-4">
         <form
           className="border p-4 rounded shadow bg-white"
