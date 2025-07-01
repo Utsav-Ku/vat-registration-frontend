@@ -39,24 +39,31 @@ const PartBForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !resStreet ||
-      !resCity ||
-      !resPincode ||
-      !permStreet ||
-      !permCity ||
-      !permPincode ||
-      !saleDate ||
-      !turnover ||
-      !authority ||
-      !econActivity ||
-      !commodity ||
-      !vatType ||
-      !returnFreq
-    ) {
-      alert("Please fill all required fields marked with *");
+    e.preventDefault();
+    const form = e.target;
+    if (!form.checkValidity()) {
+      form.reportValidity(); 
       return;
     }
+
+    // if (
+    //   !resStreet ||
+    //   !resCity ||
+    //   !resPincode ||
+    //   !permStreet ||
+    //   !permCity ||
+    //   !permPincode ||
+    //   !saleDate ||
+    //   !turnover ||
+    //   !authority ||
+    //   !econActivity ||
+    //   !commodity ||
+    //   !vatType ||
+    //   !returnFreq
+    // ) {
+    //   alert("Please fill all required fields marked with *");
+    //   return;
+    // }
 
     const newRow = {
       resStreet,
@@ -441,6 +448,10 @@ const PartBForm = () => {
               type="button"
               className="btn btn-primary"
               onClick={handleAddCommodity}
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+              }}
             >
               [+] Add
             </button>
@@ -577,7 +588,7 @@ const PartBForm = () => {
               }}
               onClick={handleSubmit}
             >
-              Save
+              Save & Continue
             </button>
           </div>
         </form>

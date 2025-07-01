@@ -78,6 +78,16 @@ const BusinessPartnerDetails = () => {
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
+  const handleSubmitFinal = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    if (!form.checkValidity()) {
+      form.reportValidity(); 
+      return;
+    }
+    navigate("/upload-document");
+  };
+
   return (
     <div>
       <Header />
@@ -564,7 +574,7 @@ const BusinessPartnerDetails = () => {
               backgroundColor: "#1E59A8",
               color: "white",
               width: "250px"
-            }} onClick={() => navigate('/upload-document')} >Save</button>
+            }} onClick={handleSubmitFinal} >Save & Continue</button>
           </div>
         </form>
       </div>

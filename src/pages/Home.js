@@ -32,7 +32,7 @@ const Home = () => {
 
                     <div style={{ marginTop: '100px'}}>
                         <button 
-                        onClick={() => navigate('/sign-up')}
+                        onClick={() => navigate('/sign-in')}
                         className="btn w-100 mb-2" 
                         style={{ backgroundColor: '#1E59A8', color: 'white' }}
                         >
