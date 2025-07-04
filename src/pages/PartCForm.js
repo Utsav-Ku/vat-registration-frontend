@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const PartCForm = () => {
   const navigate = useNavigate();
   const [isCitizen, setIsCitizen] = useState(true);
+
   const handleSubmit = (e) => {
-  e.preventDefault();
-  const form = e.target;
-  if (!form.checkValidity()) {
-    form.reportValidity(); 
-    return;
-  }
-  navigate("/bank-info");
-};
+    e.preventDefault();
+    const form = e.target;
+    if (!form.checkValidity()) {
+      form.reportValidity(); 
+      return;
+    }
+    navigate("/bank-info");
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <>
       <Header />
@@ -70,69 +76,68 @@ const PartCForm = () => {
               </div>
             </div>
 
+            {/* Accounting Year - From & To in Row Layout */}
             <div className="row mb-3 align-items-center">
-              <label className="col-sm-5 col-form-label fw-bold">Accounting Year - From</label>
-              <div className="col-sm-7">
-                <input type="text" className="form-control" placeholder="From" />
+              <label className="col-sm-5 col-form-label fw-bold">Accounting Year</label>
+              <div className="col-sm-7 d-flex align-items-center">
+                <input type="text" className="form-control me-2" placeholder="From (Month)" />
+                <span className="fw-bold me-2">To</span>
+                <input type="text" className="form-control" placeholder="To (Month)" />
               </div>
             </div>
 
+            {/* Amount of Sale During Last Quarter and Last Year in One Row */}
             <div className="row mb-3 align-items-center">
-              <label className="col-sm-5 col-form-label fw-bold">Accounting Year - To</label>
-              <div className="col-sm-7">
-                <input type="text" className="form-control" placeholder="To" />
+              <label className="col-sm-5 col-form-label fw-bold">Amount of Sale During</label>
+              <div className="col-sm-7 d-flex align-items-center">
+                <span className="me-2">Last Quarter<span className="text-danger">*</span></span>
+                <input type="number" className="form-control me-3" style={{ width: "150px" }} required />
+
+                <span className="me-2">Last Year<span className="text-danger">*</span></span>
+                <input type="number" className="form-control" style={{ width: "150px" }} required />
               </div>
             </div>
 
+            {/* License Issued Under the Tripura Shops & Establishment Act */}
             <div className="row mb-3 align-items-center">
               <label className="col-sm-5 col-form-label fw-bold">
-                Amount of sale During Last Quarter <span className="text-danger">*</span>
+                License Issued Under the Tripura Shops & Establishment Act
               </label>
-              <div className="col-sm-7">
-                <input type="number" className="form-control" required/>
+              <div className="col-sm-7 d-flex align-items-center">
+                <input
+                  type="text"
+                  className="form-control me-3"
+                  placeholder="Licence No."
+                  style={{ maxWidth: "150px" }}
+                />
+                <span className="me-2">Date</span>
+                <input
+                  type="date"
+                  className="form-control"
+                  style={{ maxWidth: "200px" }}
+                />
               </div>
             </div>
 
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-5 col-form-label fw-bold">Amount of sale During Last Year <span className="text-danger">*</span></label>
-              <div className="col-sm-7">
-                <input type="number" className="form-control"  required />
-              </div>
-            </div>
 
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-5 col-form-label fw-bold">
-                License issued under Tripura's Shop's & Establishment Act - No.
-              </label>
-              <div className="col-sm-7">
-                <input type="text" className="form-control" />
-              </div>
-            </div>
-
+            {/* Food Staff Licence issued by Competent Authority */}
             <div className="row mb-3 align-items-center">
               <label className="col-sm-5 col-form-label fw-bold">
-                License issued under Tripura's Shop's & Establishment Act - Date
+                Food Staff Licence issued by the Competent Authority
               </label>
-              <div className="col-sm-7">
-                <input type="date" className="form-control" />
-              </div>
-            </div>
-
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-5 col-form-label fw-bold">
-                Food Staff License issued by Competent Authority - No.
-              </label>
-              <div className="col-sm-7">
-                <input type="text" className="form-control" />
-              </div>
-            </div>
-
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-5 col-form-label fw-bold">
-                Food Staff License issued by Competent Authority - Date
-              </label>
-              <div className="col-sm-7">
-                <input type="date" className="form-control" />
+              <div className="col-sm-7 d-flex align-items-center">
+                <input
+                  type="text"
+                  className="form-control me-3"
+                  placeholder="Licence No."
+                  style={{ maxWidth: "150px" }}
+                />
+                <span className="me-2">Date</span>
+                <input
+                  type="date"
+                  className="form-control"
+                  style={{ maxWidth: "200px" }}
+                />
               </div>
             </div>
 
@@ -168,69 +173,62 @@ const PartCForm = () => {
               </div>
             </div>
 
-               <div className="p-4 border rounded shadow-sm mb-4 bg-light">
-  <h6 className="fw-bold text-primary mb-3">
-    <i className="bi bi-file-earmark-text-fill me-2"></i>Declaration
-  </h6>
+            {/* Declaration Section */}
+            <div className="p-4 border rounded shadow-sm mb-4" style={{ backgroundColor: "#F8F9FA" }}>
+              <h6 className="fw-bold text-primary mb-3">
+                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                Declaration
+              </h6>
 
-  <div className="row g-3 mb-3">
-    <div className="col-sm-2">
-      <input
-        type="text"
-        className="form-control"
-        value="I"
-        readOnly
-      />
-    </div>
-    <div className="col-sm-6">
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Applicant Name"
-        required
-      />
-    </div>
-    <div className="col-sm-4">
-      <select className="form-select" required>
-        <option value="">Select Role</option>
-        <option>Chairman</option>
-        <option>Owner</option>
-        <option>Partner</option>
-      </select>
-    </div>
-  </div>
+              <p className="mb-3">
+                I,&nbsp;
+                <input
+                  type="text"
+                  className="form-control d-inline-block"
+                  style={{ width: "200px", display: "inline-block" }}
+                  placeholder="Applicant Name"
+                  required
+                />
+                &nbsp;
+                <select className="form-select d-inline-block" style={{ width: "180px", display: "inline-block" }} required>
+                  <option value="">Select Role</option>
+                  <option>Chairman</option>
+                  <option>Owner</option>
+                  <option>Partner</option>
+                </select>
+                &nbsp; hereby declare that the particulars given herein are correct and I hereby apply for registration for Value Added Tax.
+              </p>
 
-  <p className="fst-italic mb-4 ps-1 text-muted">
-    hereby declare that the particulars given herein are correct and I hereby apply for registration for Value Added Tax.
-  </p>
-
-  <div className="row g-3">
-    <label className="col-sm-3 col-form-label fw-bold">
-      Designation
-    </label>
-    <div className="col-sm-9">
-      <input
-        type="text"
-        className="form-control"
-        required
-      />
-    </div>
-  </div>
-</div>
-          <div className="d-flex justify-content-center mt-4">
-              <div className="d-flex" style={{ gap: "30px" }}>
-                <button
-                  type="button"
-                  className="btn px-4"
-                  style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }}
-                  onClick={() => navigate("/part-b")}
-                >
-                  Previous
-                </button>
-                  <button type="submit" className="btn px-4" style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }} >
-                   Save & Continue
-            </button>
+              <div className="row g-3 mt-3">
+                <label className="col-sm-3 col-form-label fw-bold">
+                  Designation<span className="text-danger">*</span>
+                </label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter your designation"
+                    required
+                  />
+                </div>
               </div>
+            </div>
+
+
+            <div className="d-flex justify-content-center mt-4">
+                <div className="d-flex" style={{ gap: "30px" }}>
+                  <button
+                    type="button"
+                    className="btn px-4"
+                    style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }}
+                    onClick={() => navigate("/part-b")}
+                  >
+                    Previous
+                  </button>
+                  <button type="submit" className="btn px-4" style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }} >
+                    Save & Continue
+                  </button>
+                </div>
             </div>
           </form>
         </div>
@@ -240,5 +238,3 @@ const PartCForm = () => {
 };
 
 export default PartCForm;
-
-

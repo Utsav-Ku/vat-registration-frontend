@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,15 +29,11 @@ const BusinessPartnerDetails = () => {
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [tableRows, setTableRows] = useState([]);
-  const [docUploadError, setDocUploadError] = useState('');
 
   const maxFileSize = 500 * 1024;
 
   const handleSubmit = (e) => {
-    const form = e.target.form || e.target;
-    if (!form.checkValidity()) return;
     e.preventDefault();
-
     const newRow = {
       partnerType,
       personName,
@@ -50,8 +46,7 @@ const BusinessPartnerDetails = () => {
       entryDate,
       exitDate
     };
-
-    setTableRows((prev) => [...prev, newRow]);
+    setTableRows([...tableRows, newRow]);
     setSuccessMessage("Details Inserted Successfully !!");
     setTimeout(() => setSuccessMessage(''), 3000);
   };
@@ -61,10 +56,7 @@ const BusinessPartnerDetails = () => {
   };
 
   const handleUpload = (e) => {
-    const form = e.target.form || e.target.closest('form');
-    if (!form.checkValidity()) return;
     e.preventDefault();
-
     if (!documentType || !fileType || !file) {
       alert("Please select document type, file type, and upload a file.");
       return;
@@ -73,49 +65,32 @@ const BusinessPartnerDetails = () => {
       alert("File exceeds maximum size of 500KB.");
       return;
     }
-
     const newDoc = {
       name: documentType,
       type: fileType,
       size: `${Math.round(file.size / 1024)} KB`
     };
-
-    const newRow = {
-      partnerType,
-      personName,
-      fatherName,
-      presentAddress,
-      locality,
-      village,
-      tel,
-      dob,
-      entryDate,
-      exitDate
-    };
-
-    setUploadedDocs((prev) => [...prev, newDoc]);
-    setTableRows((prev) => [...prev, newRow]);
-    setSuccessMessage("Document and Details Uploaded Successfully !!");
+    setUploadedDocs([...uploadedDocs, newDoc]);
+    setSuccessMessage("Document Uploaded Successfully !!");
     setDocumentType('');
     setFileType('');
     setFile(null);
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
-  const handleSave = (e) => {
+  const handleSubmitFinal = (e) => {
     e.preventDefault();
-    const form = e.target.form || e.target.closest('form');
+    const form = e.target;
     if (!form.checkValidity()) {
-      form.reportValidity();
+      form.reportValidity(); 
       return;
     }
-    if (uploadedDocs.length === 0) {
-      setDocUploadError("Document not uploaded. Please upload a document before proceeding.");
-      return;
-    }
-    setDocUploadError('');
-    navigate('/upload-document');
+    navigate("/upload-document");
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
@@ -307,7 +282,7 @@ const BusinessPartnerDetails = () => {
             </div>
           </div>
 
-          {/* <div className="mb-3 row">
+          <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
               Permanent Address
             </label>
@@ -315,13 +290,13 @@ const BusinessPartnerDetails = () => {
               <input
                 type="text"
                 className="form-control"
-                name="permanentAddress"
-                value={permanentAddress}
-                onChange={(e) => setPermanentAddress(e.target.value)}
+                name="village"
+                value={village}
+                onChange={(e) => setVillage(e.target.value)}
                 required
               />
             </div>
-          </div> */}
+          </div>
 
           <hr className="my-4" />
           <h6 className="fw-bold mb-2" style={{ color: "#2282C1" }}>
@@ -475,7 +450,7 @@ const BusinessPartnerDetails = () => {
               Select Document
             </label>
             <div className="col-12 col-md-8">
-              <select className="form-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
+              <select className="form-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)} required>
                 <option value="">Select Document Type</option>
                 <option value="Address Proof of Business Place">Address Proof of Business Place</option>
                 <option value="Identity Proof">Identity Proof</option>
@@ -488,7 +463,7 @@ const BusinessPartnerDetails = () => {
               Select File Type
             </label>
             <div className="col-12 col-md-8">
-              <select className="form-select" value={fileType} onChange={(e) => setFileType(e.target.value)}>
+              <select className="form-select" value={fileType} onChange={(e) => setFileType(e.target.value)} required>
                 <option value="">Select File Type</option>
                 <option value=".pdf">.pdf</option>
                 <option value=".jpg">.jpg</option>
@@ -509,7 +484,7 @@ const BusinessPartnerDetails = () => {
 
           <div className="d-flex justify-content-center">
             <button className="btn btn-success px-4 mb-4" onClick={handleUpload}>
-              Upload
+              Upload Document
             </button>
           </div>
 
@@ -517,13 +492,6 @@ const BusinessPartnerDetails = () => {
             <div className="alert alert-success text-center fw-bold" role="alert">
               <i className="bi bi-check-circle-fill me-2"></i>
               {successMessage}
-            </div>
-          )}
-
-          {docUploadError && (
-            <div className="alert alert-danger text-center fw-bold" role="alert">
-              <i className="bi bi-exclamation-circle-fill me-2"></i>
-              {docUploadError}
             </div>
           )}
 
@@ -600,23 +568,17 @@ const BusinessPartnerDetails = () => {
 
           {/* Buttons */}
           <div className="d-flex justify-content-center gap-4 mt-4">
-            <button
-              type="button"
-              className="btn px-4"
-              style={{ backgroundColor: "#1E59A8", color: "white", width: "250px" }}
-              onClick={() => navigate('/additional-business-places')}
-            >
-              Previous
-            </button>
+            <button type="button" className="btn px-4" style={{
+              backgroundColor: "#1E59A8",
+              color: "white",
+              width: "250px"
+            }} onClick={() => navigate('/additional-business-places')}>Previous</button>
 
-            <button
-              type="button"
-              className="btn px-4"
-              style={{ backgroundColor: "#1E59A8", color: "white", width: "250px" }}
-              onClick={handleSave}
-            >
-              Save
-            </button>
+            <button type="submit" className="btn px-4" style={{
+              backgroundColor: "#1E59A8",
+              color: "white",
+              width: "250px"
+            }} onClick={handleSubmitFinal} >Save & Continue</button>
           </div>
         </form>
       </div>

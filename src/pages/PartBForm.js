@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   states,
   districtsByState,
   statutoryAuthorities,
   commodities,
-} from "../constants/dropDowns.js";
+} from "../contants/dropdowns.js";
+import Header from "../components/Header.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -38,6 +39,13 @@ const PartBForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    e.preventDefault();
+    const form = e.target;
+    if (!form.checkValidity()) {
+      form.reportValidity(); 
+      return;
+    }
 
     if (
       !resStreet ||
@@ -83,6 +91,7 @@ const PartBForm = () => {
 
     setSuccessMessage("Details Inserted Successfully !!");
     setTimeout(() => setSuccessMessage(""), 3000);
+    navigate("/part-c");
   };
 
   const handleAddCommodity = () => {
@@ -106,8 +115,13 @@ const PartBForm = () => {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
+      <Header />
       <div className="container my-4">
         <form
           className="border p-4 rounded shadow bg-white"
@@ -372,7 +386,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Economic Activity Code
+              Economic Activity Code<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8 d-flex flex-wrap">
               {["Manufacturer", "Trader", "Seller", "Reseller", "Importer"].map(
@@ -440,6 +454,10 @@ const PartBForm = () => {
               type="button"
               className="btn btn-primary"
               onClick={handleAddCommodity}
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+              }}
             >
               [+] Add
             </button>
@@ -484,7 +502,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Date of First Taxable Sale (DD/MM/YYYY)
+              Date of First Taxable Sale (DD/MM/YYYY)<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-4">
               <input
@@ -500,7 +518,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Do you wish to register for VAT, Composition Scheme (COT)..?
+              Do you wish to register for VAT, Composition Scheme (COT)..?<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <select
@@ -518,7 +536,7 @@ const PartBForm = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Estimated Turnover for 12 Months/Quarters
+              Estimated Turnover for 12 Months/Quarters<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
@@ -576,7 +594,7 @@ const PartBForm = () => {
               }}
               onClick={handleSubmit}
             >
-              Save
+              Save & Continue
             </button>
           </div>
         </form>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,13 +6,17 @@ const Finish = () => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div>
             <Header />
 
             <div className="container mt-4">
                 <div className="border p-4 mx-auto shadow d-flex flex-column align-items-center"
-                    style={{ maxWidth: '650px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '6px' }}>
+                    style={{ maxWidth: '850px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '6px' }}>
 
                     {/* Finish Text */}
                     <div
@@ -31,7 +35,7 @@ const Finish = () => {
                             borderRadius: '6px',
                             color: '#842029',
                             height: '150px',
-                            width: '600px',
+                            width: '800px',
                             fontSize: '1.1rem',
                             lineHeight: '1.8',
                             fontWeight: '500'
@@ -57,7 +61,7 @@ const Finish = () => {
                             borderRadius: '6px',
                             color: '#000',
                             height: '150px',
-                            width: '600px',
+                            width: '800px',
                             fontSize: '1.1rem',
                             lineHeight: '1.8',
                             fontWeight: '500'
