@@ -307,7 +307,7 @@ const BusinessPartnerDetails = () => {
             </div>
           </div>
 
-          <div className="mb-3 row">
+          {/* <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
               Permanent Address
             </label>
@@ -321,7 +321,7 @@ const BusinessPartnerDetails = () => {
                 required
               />
             </div>
-          </div>
+          </div> */}
 
           <hr className="my-4" />
           <h6 className="fw-bold mb-2" style={{ color: "#2282C1" }}>

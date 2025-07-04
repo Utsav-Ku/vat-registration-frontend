@@ -37,54 +37,53 @@ const PartBForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (
-    !resStreet ||
-    !resCity ||
-    !resPincode ||
-    !permStreet ||
-    !permCity ||
-    !permPincode ||
-    !saleDate ||
-    !turnover ||
-    !authority ||
-    !econActivity ||
-    !commodity ||
-    !vatType ||
-    !returnFreq
-  ) {
-    alert("Please fill all required fields marked with *");
-    return;
-  }
+    if (
+      !resStreet ||
+      !resCity ||
+      !resPincode ||
+      !permStreet ||
+      !permCity ||
+      !permPincode ||
+      !saleDate ||
+      !turnover ||
+      !authority ||
+      !econActivity ||
+      !commodity ||
+      !vatType ||
+      !returnFreq
+    ) {
+      alert("Please fill all required fields marked with *");
+      return;
+    }
 
-  const newRow = {
-    resStreet,
-    resCity,
-    resDistrict,
-    resState,
-    resPincode,
-    resCountry,
-    permStreet,
-    permCity,
-    permDistrict,
-    permState,
-    permPincode,
-    permCountry,
-    authority,
-    econActivity,
-    commodity,
-    commodityDesc,
-    saleDate,
-    vatType,
-    turnover,
-    returnFreq,
+    const newRow = {
+      resStreet,
+      resCity,
+      resDistrict,
+      resState,
+      resPincode,
+      resCountry,
+      permStreet,
+      permCity,
+      permDistrict,
+      permState,
+      permPincode,
+      permCountry,
+      authority,
+      econActivity,
+      commodity,
+      commodityDesc,
+      saleDate,
+      vatType,
+      turnover,
+      returnFreq,
+    };
+
+    setSuccessMessage("Details Inserted Successfully !!");
+    setTimeout(() => setSuccessMessage(""), 3000);
   };
-
-  setSuccessMessage("Details Inserted Successfully !!");
-  setTimeout(() => setSuccessMessage(""), 3000);
-};
-
 
   const handleAddCommodity = () => {
     if (!commodity || !commodityDesc) {
@@ -568,18 +567,17 @@ const PartBForm = () => {
             </button>
 
             <button
-  type="button"
-  className="btn px-4"
-  style={{
-    backgroundColor: "#1E59A8",
-    color: "white",
-    width: "250px",
-  }}
-  onClick={handleSubmit}
->
-  Save
-</button>
-
+              type="button"
+              className="btn px-4"
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+                width: "250px",
+              }}
+              onClick={handleSubmit}
+            >
+              Save
+            </button>
           </div>
         </form>
       </div>
