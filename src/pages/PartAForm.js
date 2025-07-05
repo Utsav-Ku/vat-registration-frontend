@@ -97,7 +97,7 @@ const PartAForm = () => {
 
       if (data.success) {
         alert(`Registration Successful!\nApplication No: ${data.applicationNumber}\nPassword: ${data.password}`);
-        localStorage.setItem("token", data.applicationNumber); 
+        localStorage.setItem("applicationNumber", data.applicationNumber); 
         navigate("/part-b");
       } else {
         alert("Unexpected server response.");
