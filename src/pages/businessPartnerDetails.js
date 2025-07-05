@@ -33,25 +33,6 @@ const BusinessPartnerDetails = () => {
 
   const maxFileSize = 500 * 1024;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newRow = {
-      partnerType,
-      personName,
-      fatherName,
-      presentAddress,
-      locality,
-      village,
-      tel,
-      dob,
-      entryDate,
-      exitDate
-    };
-    setTableRows([...tableRows, newRow]);
-    setSuccessMessage("Details Inserted Successfully !!");
-    setTimeout(() => setSuccessMessage(''), 3000);
-  };
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -79,13 +60,34 @@ const BusinessPartnerDetails = () => {
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
-  const handleSubmitFinal = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    if (!form.checkValidity()) {
-      form.reportValidity(); 
+
+    const form = e.target.form || e.target;
+    const firstInvalid = form.querySelector(":invalid");
+
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstInvalid.focus();
+      form.reportValidity();
       return;
     }
+
+    const newRow = {
+      partnerType,
+      personName,
+      fatherName,
+      presentAddress,
+      locality,
+      village,
+      tel,
+      dob,
+      entryDate,
+      exitDate,
+    };
+
+    setTableRows([...tableRows, newRow]);
+    setSuccessMessage("Details Inserted Successfully !!");
     navigate("/upload-document");
   };
 
@@ -138,7 +140,7 @@ const BusinessPartnerDetails = () => {
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Name of Person
+              Name of Person <span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
@@ -163,7 +165,6 @@ const BusinessPartnerDetails = () => {
                 name="fatherName"
                 value={fatherName}
                 onChange={(e) => setFatherName(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -180,7 +181,6 @@ const BusinessPartnerDetails = () => {
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
                 max={new Date().toISOString().split("T")[0]}
-                required
               />
             </div>
           </div>
@@ -195,7 +195,6 @@ const BusinessPartnerDetails = () => {
                 value={designation}
                 onChange={(e) => setDesignation(e.target.value)}
                 style={{ backgroundColor: '#f0f0f0' }}
-                required
               >
                 <option value="">Select Type</option>
                 <option value="Contact Person">Chairman</option>
@@ -214,7 +213,6 @@ const BusinessPartnerDetails = () => {
                 name="education"
                 value={education}
                 onChange={(e) => setEducation(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -230,7 +228,6 @@ const BusinessPartnerDetails = () => {
                 name="pan"
                 value={pan}
                 onChange={(e) => setPan(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -246,7 +243,6 @@ const BusinessPartnerDetails = () => {
                 name="presentAddress"
                 value={presentAddress}
                 onChange={(e) => setPresentAddress(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -262,14 +258,13 @@ const BusinessPartnerDetails = () => {
                 name="locality"
                 value={locality}
                 onChange={(e) => setLocality(e.target.value)}
-                required
               />
             </div>
           </div>
 
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Village/Town/City
+              Village/Town/City <span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
@@ -291,10 +286,9 @@ const BusinessPartnerDetails = () => {
               <input
                 type="text"
                 className="form-control"
-                name="village"
-                value={village}
-                onChange={(e) => setVillage(e.target.value)}
-                required
+                name="permanentAddress"
+                value={permanentAddress}
+                onChange={(e) => setPermanentAddress(e.target.value)}
               />
             </div>
           </div>
@@ -315,7 +309,6 @@ const BusinessPartnerDetails = () => {
                 name="tel"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -331,7 +324,6 @@ const BusinessPartnerDetails = () => {
                 name="fax"
                 value={fax}
                 onChange={(e) => setFax(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -347,7 +339,6 @@ const BusinessPartnerDetails = () => {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -363,7 +354,6 @@ const BusinessPartnerDetails = () => {
                 name="interest"
                 value={interest}
                 onChange={(e) => setInterest(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -381,7 +371,6 @@ const BusinessPartnerDetails = () => {
                 value={entryDate}
                 onChange={(e) => setEntryDate(e.target.value)}
                 max={new Date().toISOString().split("T")[0]}
-                required
               />
             </div>
           </div>
@@ -399,7 +388,6 @@ const BusinessPartnerDetails = () => {
                 value={exitDate}
                 onChange={(e) => setExitDate(e.target.value)}
                 max={new Date().toISOString().split("T")[0]}
-                required
               />
             </div>
           </div>
@@ -420,7 +408,6 @@ const BusinessPartnerDetails = () => {
                 name="voterId"
                 value={voterId}
                 onChange={(e) => setVoterId(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -436,7 +423,6 @@ const BusinessPartnerDetails = () => {
                 name="residentialCert"
                 value={residentialCert}
                 onChange={(e) => setResidentialCert(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -451,7 +437,7 @@ const BusinessPartnerDetails = () => {
               Select Document
             </label>
             <div className="col-12 col-md-8">
-              <select className="form-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)} required>
+              <select className="form-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
                 <option value="">Select Document Type</option>
                 <option value="Address Proof of Business Place">Address Proof of Business Place</option>
                 <option value="Identity Proof">Identity Proof</option>
@@ -464,7 +450,7 @@ const BusinessPartnerDetails = () => {
               Select File Type
             </label>
             <div className="col-12 col-md-8">
-              <select className="form-select" value={fileType} onChange={(e) => setFileType(e.target.value)} required>
+              <select className="form-select" value={fileType} onChange={(e) => setFileType(e.target.value)}>
                 <option value="">Select File Type</option>
                 <option value=".pdf">.pdf</option>
                 <option value=".jpg">.jpg</option>
@@ -478,7 +464,7 @@ const BusinessPartnerDetails = () => {
               Upload File
             </label>
             <div className="col-12 col-md-8">
-              <input type="file" className="form-control" onChange={handleFileChange} required />
+              <input type="file" className="form-control" onChange={handleFileChange} />
               {file && <small className="text-success">File Size: {Math.round(file.size / 1024)} KB</small>}
             </div>
           </div>
@@ -579,7 +565,7 @@ const BusinessPartnerDetails = () => {
               backgroundColor: "#1E59A8",
               color: "white",
               width: "250px"
-            }} onClick={handleSubmitFinal} >Save & Continue</button>
+            }} >Save & Continue</button>
           </div>
         </form>
       </div>
