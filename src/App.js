@@ -7,7 +7,7 @@ import Finish from "./pages/Finish.js";
 import DocumentUpload from "./pages/DocumentUpload.js";
 import PartAForm from "./pages/PartAForm.js";
 import PartBForm from "./pages/PartBForm.js";
-import BusinessPartnerDetails from "./pages/businessPartnerDetails.js";
+import BusinessPartnerDetails from "./pages/BusinessPartnerDetails.js";
 import PartCForm from "./pages/PartCForm.js";
 import BankInfo from "./pages/BankInfo.js";
 import AdditionalBusinessPlaces from "./pages/AdditionalBusinessPlaces.js";
