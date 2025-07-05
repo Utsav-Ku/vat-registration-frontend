@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import {
   registrationTypes,
   offices,
@@ -33,6 +35,7 @@ const PartAForm = () => {
   });
 
   const [pinError, setPinError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -53,15 +56,60 @@ const PartAForm = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (form.pin.length !== 6) {
       setPinError("PIN Code is 6 Digit");
       return;
     }
-    //save logic yaha pe likho( send  PartAForm data to our backend server (for example, using `fetch` or `axios` to POST the data to an API endpoint))
-    navigate("/part-b");
+
+    setLoading(true);
+
+    const payload = {
+      typeOfRegistration: form.registrationType,
+      office: form.office,
+      businessConstitution: form.businessStatus,
+      applicantName: form.applicantName,
+      fathersName: form.fatherName,
+      dateOfBirth: form.dob,
+      gender: form.gender === "Male" ? "M" : "F",
+      tradingName: form.tradingName,
+      pan: form.pan,
+      address: {
+        roomNo: form.roomNo,
+        area: form.area,
+        village: form.city,
+        district: form.district,
+        pinCode: form.pin,
+        occupancyStatus: form.occupancy,
+      },
+      contact: {
+        telephone: form.telephone,
+        fax: form.fax,
+        email: form.email,
+        mobile: form.mobile,
+      }
+    };
+
+    try {
+      const { data } = await axios.post("https://tax-nic-1y21.onrender.com/registration/part-a", payload);
+
+      if (data.success) {
+        alert(`Registration Successful!\nApplication No: ${data.applicationNumber}\nPassword: ${data.password}`);
+        localStorage.setItem("token", data.applicationNumber); 
+        navigate("/part-b");
+      } else {
+        alert("Unexpected server response.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Server error or network issue");
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -172,10 +220,11 @@ const PartAForm = () => {
           {/* Father's/Mother's/Husband's Name */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold" style={{ whiteSpace: "normal" }}>
-              Father's/Mother's/Husband's Name
+              Father's/Mother's/Husband's Name<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 name="fatherName"
@@ -188,7 +237,7 @@ const PartAForm = () => {
           {/* Date of Birth & Gender */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Date of Birth (DD/MM/YYYY)
+              Date of Birth (DD/MM/YYYY)<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-4">
               <input
@@ -245,10 +294,11 @@ const PartAForm = () => {
           {/* PAN */}
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              PAN
+              PAN<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 name="pan"
@@ -280,10 +330,11 @@ const PartAForm = () => {
           </div>
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Area or Locality
+              Area or Locality<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 name="area"
@@ -294,10 +345,11 @@ const PartAForm = () => {
           </div>
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Village/Town/City
+              Village/Town/City<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 name="city"
@@ -350,10 +402,11 @@ const PartAForm = () => {
           </div>
           <div className="mb-3 row">
             <label className="col-12 col-md-4 col-form-label fw-bold">
-              Occupancy Status
+              Occupancy Status<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 name="occupancy"
                 value={form.occupancy}
@@ -406,10 +459,11 @@ const PartAForm = () => {
           </div>
           <div className="mb-3 row">
             <label className="col-12 col-md-2 col-form-label fw-bold">
-              Mobile
+              Mobile<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-4">
               <input
+                required
                 type="text"
                 className="form-control"
                 name="mobile"
@@ -418,10 +472,11 @@ const PartAForm = () => {
               />
             </div>
             <label className="col-12 col-md-2 col-form-label fw-bold">
-              Email
+              Email<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-4">
               <input
+                required
                 type="email"
                 className="form-control"
                 name="email"
@@ -435,14 +490,22 @@ const PartAForm = () => {
           <div className="d-flex justify-content-center mt-4">
             <button
               type="submit"
-              className="btn px-4"
+              className="btn px-4 d-flex align-items-center justify-content-center"
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
                 width: "250px",
               }}
+              disabled={loading}
             >
-              Save & Continue
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Processing...
+                </>
+              ) : (
+                "Save & Continue"
+              )}
             </button>
           </div>
         </form>
