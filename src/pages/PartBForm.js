@@ -149,6 +149,7 @@ const PartBForm = () => {
                 }}
                 style={{ backgroundColor: "#f0f0f0" }}
               >
+                <option value="">Select</option>
                 {states.map((state) => (
                   <option key={state} value={state}>
                     {state}
@@ -189,7 +190,15 @@ const PartBForm = () => {
                 type="text"
                 className="form-control"
                 value={resPincode}
-                onChange={(e) => setResPincode(e.target.value)}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (/^\d{0,6}$/.test(input)) {
+                    setResPincode(input);
+                  }
+                }}
+                maxLength="6"
+                pattern="\d{6}"
+                title="PIN code must be exactly 6 digits"
               />
             </div>
           </div>
@@ -257,6 +266,7 @@ const PartBForm = () => {
                 }}
                 style={{ backgroundColor: "#f0f0f0" }}
               >
+                <option value="">Select</option>
                 {states.map((state) => (
                   <option key={state} value={state}>
                     {state}
@@ -296,8 +306,16 @@ const PartBForm = () => {
               <input
                 type="text"
                 className="form-control"
-                value={permPincode}
-                onChange={(e) => setPermPincode(e.target.value)}
+                value={resPincode}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (/^\d{0,6}$/.test(input)) {
+                    setResPincode(input);
+                  }
+                }}
+                maxLength="6"
+                pattern="\d{6}"
+                title="PIN code must be exactly 6 digits"
               />
             </div>
           </div>
