@@ -197,7 +197,6 @@ const PartBForm = () => {
                   }
                 }}
                 maxLength="6"
-                required
                 pattern="\d{6}"
                 title="PIN code must be exactly 6 digits"
               />
@@ -315,7 +314,6 @@ const PartBForm = () => {
                   }
                 }}
                 maxLength="6"
-                required
                 pattern="\d{6}"
                 title="PIN code must be exactly 6 digits"
               />
