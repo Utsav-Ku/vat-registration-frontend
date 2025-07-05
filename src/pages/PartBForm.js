@@ -26,7 +26,7 @@ const PartBForm = () => {
   const [permCountry, setPermCountry] = useState("INDIA");
 
   const [authority, setAuthority] = useState("REGISTER OF COMPANIES");
-  const [econActivity, setEconActivity] = useState("Manufacturer");
+  const [econActivity, setEconActivity] = useState("");
   const [commodity, setCommodity] = useState("");
   const [commodityDesc, setCommodityDesc] = useState("");
   const [saleDate, setSaleDate] = useState("");
@@ -40,53 +40,21 @@ const PartBForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    e.preventDefault();
-    const form = e.target;
-    if (!form.checkValidity()) {
+    const form = e.target.form || e.target;
+    const firstInvalid = form.querySelector(":invalid");
+
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstInvalid.focus();
       form.reportValidity(); 
       return;
     }
 
-    if (
-      !resStreet ||
-      !resCity ||
-      !resPincode ||
-      !permStreet ||
-      !permCity ||
-      !permPincode ||
-      !saleDate ||
-      !turnover ||
-      !authority ||
-      !econActivity ||
-      !commodity ||
-      !vatType ||
-      !returnFreq
-    ) {
-      alert("Please fill all required fields marked with *");
-      return;
-    }
-
     const newRow = {
-      resStreet,
-      resCity,
-      resDistrict,
-      resState,
-      resPincode,
-      resCountry,
-      permStreet,
-      permCity,
-      permDistrict,
-      permState,
-      permPincode,
-      permCountry,
-      authority,
       econActivity,
-      commodity,
-      commodityDesc,
       saleDate,
       vatType,
       turnover,
-      returnFreq,
     };
 
     setSuccessMessage("Details Inserted Successfully !!");
@@ -149,7 +117,6 @@ const PartBForm = () => {
                 className="form-control"
                 value={resStreet}
                 onChange={(e) => setResStreet(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -164,7 +131,6 @@ const PartBForm = () => {
                 className="form-control"
                 value={resCity}
                 onChange={(e) => setResCity(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -182,9 +148,7 @@ const PartBForm = () => {
                   setResDistrict("");
                 }}
                 style={{ backgroundColor: "#f0f0f0" }}
-                required
               >
-                <option value="">Select</option>
                 {states.map((state) => (
                   <option key={state} value={state}>
                     {state}
@@ -204,7 +168,6 @@ const PartBForm = () => {
                 value={resDistrict}
                 onChange={(e) => setResDistrict(e.target.value)}
                 style={{ backgroundColor: "#f0f0f0" }}
-                required
               >
                 <option value="">Select</option>
                 {resState &&
@@ -227,7 +190,6 @@ const PartBForm = () => {
                 className="form-control"
                 value={resPincode}
                 onChange={(e) => setResPincode(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -263,7 +225,6 @@ const PartBForm = () => {
                 className="form-control"
                 value={permStreet}
                 onChange={(e) => setPermStreet(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -278,7 +239,6 @@ const PartBForm = () => {
                 className="form-control"
                 value={permCity}
                 onChange={(e) => setPermCity(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -296,9 +256,7 @@ const PartBForm = () => {
                   setPermDistrict("");
                 }}
                 style={{ backgroundColor: "#f0f0f0" }}
-                required
               >
-                <option value="">Select</option>
                 {states.map((state) => (
                   <option key={state} value={state}>
                     {state}
@@ -318,7 +276,6 @@ const PartBForm = () => {
                 value={permDistrict}
                 onChange={(e) => setPermDistrict(e.target.value)}
                 style={{ backgroundColor: "#f0f0f0" }}
-                required
               >
                 <option value="">Select</option>
                 {resState &&
@@ -341,7 +298,6 @@ const PartBForm = () => {
                 className="form-control"
                 value={permPincode}
                 onChange={(e) => setPermPincode(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -372,7 +328,6 @@ const PartBForm = () => {
                 value={authority}
                 onChange={(e) => setAuthority(e.target.value)}
                 style={{ backgroundColor: "#f0f0f0" }}
-                required
               >
                 <option value="">Select</option>
                 {statutoryAuthorities.map((auth) => (
@@ -399,6 +354,7 @@ const PartBForm = () => {
                       checked={econActivity === type}
                       onChange={(e) => setEconActivity(e.target.value)}
                       name="econActivity"
+                      required
                     />
                     <label className="form-check-label">{type}</label>
                   </div>
@@ -422,7 +378,6 @@ const PartBForm = () => {
                 value={commodity}
                 onChange={(e) => setCommodity(e.target.value)}
                 style={{ backgroundColor: "#f0f0f0" }}
-                required
               >
                 <option value="">Select</option>
                 {commodities.map((item, index) => (
