@@ -105,8 +105,7 @@ const DocumentUpload = () => {
 
                     {/* Success Message */}
                     {successMessage && (
-                        <div className="px-3 py-2 mb-4 fw-bold text-center"
-                            style={{ backgroundColor: '#FFF3CD', borderRadius: '6px', color: '#198754', width: 'fit-content' }}>
+                        <div className="alert alert-success text-center fw-bold" role="alert">
                             <i className="bi bi-check-circle-fill me-2"></i>
                             {successMessage}
                         </div>

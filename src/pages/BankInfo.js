@@ -193,8 +193,9 @@ const BankInfo = () => {
             </div>
 
             {isSubmitted && (
-              <div className="text-center fw-bold py-2 mt-2 mx-auto" style={{ backgroundColor: '#ffffcc', border: '1px solid #cccc00', color: '#000', maxWidth: '400px', borderRadius: '4px' }}>
-                ✅ Details Inserted Successfully !!
+              <div className="alert alert-success text-center fw-bold" role="alert">
+                <i className="bi bi-check-circle-fill me-2"></i>
+                Details Inserted Successfully !!
               </div>
             )}
           </form>
