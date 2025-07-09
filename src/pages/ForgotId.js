@@ -200,7 +200,7 @@ const ForgotApplicationNumber = () => {
                                     Processing...
                                     </>
                                 ) : (
-                                    "Forgot"
+                                    "Retrieve Application Number"
                                 )}
                             </button>
                         </div>
