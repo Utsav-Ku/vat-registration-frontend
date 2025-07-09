@@ -5,7 +5,12 @@ import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
 
     const generatePin = () => {
-        return Math.floor(100000 + Math.random() * 900000).toString();
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let pin = '';
+        for (let i = 0; i < 5; i++) {
+            pin += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return pin;
     };
 
     const navigate = useNavigate();

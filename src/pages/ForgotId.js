@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ForgotApplicationNumber = () => {
 
     const generatePin = () => {
-        return Math.floor(100000 + Math.random() * 900000).toString();
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let pin = '';
+        for (let i = 0; i < 5; i++) {
+            pin += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return pin;
     };
+
 
     const navigate = useNavigate();
 
@@ -19,6 +26,7 @@ const ForgotApplicationNumber = () => {
     const [securityPin, setSecurityPin] = useState("");
     const [securityPinText, setSecurityPinText] = useState(generatePin());
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const speakSecurityPin = () => {
         if (isSpeaking) return;
@@ -35,10 +43,44 @@ const ForgotApplicationNumber = () => {
         };
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Add validation or API integration
-        navigate('/sign-up');
+
+        setLoading(true);
+
+        const dateOfBirth = `${dobYear}-${dobMonth.padStart(2, '0')}-${dobDay.padStart(2, '0')}`;
+
+        const payload = {
+            "applicantName": applicantName,
+            "fathersName": fatherName,
+            "dateOfBirth": dateOfBirth,
+            "captcha": securityPin
+        }
+
+        if(securityPin !== securityPinText){
+            alert("Invalid Capchta");
+            setSecurityPin("");
+            setLoading(false);
+            return;
+        }
+
+        
+        try{
+            const { data } = await axios.post("https://tax-nic-1y21.onrender.com/auth/forgot-application", payload);
+
+            if(data.success){
+                alert(`Application number and password retrieved successfully!! \n Application No: ${data.applicationNumber} \n Password: ${data.newPassword}`);
+                navigate('/sign-in');
+            } else{
+                alert("Invalid Credentials!!");
+            }
+
+        } catch (error){
+            alert("Server Error");
+        } finally{
+            setLoading(false);
+        }
     };
 
     return (
@@ -142,8 +184,24 @@ const ForgotApplicationNumber = () => {
                         </div>
 
                         <div className="d-flex justify-content-center">
-                            <button type="submit" className="btn px-4" style={{ backgroundColor: '#1E59A8', color: 'white', width: '250px' }}>
-                                Submit
+                            <button
+                                type="submit"
+                                className="btn px-4 d-flex align-items-center justify-content-center"
+                                style={{
+                                    backgroundColor: "#1E59A8",
+                                    color: "white",
+                                    width: "250px",
+                                }}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Processing...
+                                    </>
+                                ) : (
+                                    "Forgot"
+                                )}
                             </button>
                         </div>
                     </form>
