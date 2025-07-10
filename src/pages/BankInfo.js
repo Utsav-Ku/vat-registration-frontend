@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -11,6 +12,7 @@ const BankInfo = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [bankAccounts, setBankAccounts] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setBankName("");
@@ -21,18 +23,110 @@ const BankInfo = () => {
     setSelectedIndex(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    if (!form.checkValidity()) {
-      form.reportValidity(); 
+
+    if (bankAccounts.length === 0) {
+      alert("Please add at least one bank account before continuing.");
       return;
     }
-    navigate("/additional-business-places");
+
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token"); // 👈 Retrieve token
+
+    if (!applicationNumber) {
+      alert("Application number not found. Please complete Part A first.");
+      return;
+    }
+
+    if (!token) {
+      alert("Authorization token not found. Please login again.");
+      return;
+    }
+
+    setLoading(true);
+
+    const firstBank = bankAccounts[0];
+
+    if (!firstBank.bankName || !firstBank.branchName || !firstBank.accountNumber || !firstBank.accountType || !firstBank.branchCode) {
+      alert("Incomplete bank account details.");
+      setLoading(false);
+      return;
+    }
+
+    const payload = {
+      applicationNumber,
+      bankName: firstBank.bankName,
+      branchAddress: firstBank.branchName,
+      accountNumber: firstBank.accountNumber,
+      branchCode: firstBank.branchCode,
+      accountType: firstBank.accountType,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "https://tax-nic-1y21.onrender.com/registration/bank-info",
+        payload
+      );
+
+      if (data.success) {
+        alert("Bank Info saved successfully.");
+        navigate("/additional-business-places");
+      } else {
+        alert(data.message || "Failed to save Bank Info.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while submitting the form. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBankInfoData = async () => {
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token");
+
+    if (!applicationNumber) {
+      alert("Application number not found. Please complete Part A first.");
+      return;
+    }
+
+    if (!token) {
+      alert("Authorization token not found. Please login again.");
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `https://tax-nic-1y21.onrender.com/registration/bank-info?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = res.data;
+      console.log(data);
+      if (data.bankName && data.accountNumber) {
+        const entry = {
+          bankName: data.bankName,
+          branchName: data.branchAddress,
+          accountNumber: data.accountNumber,
+          accountType: data.accountType,
+          branchCode: data.branchCode,
+        };
+        setBankAccounts([entry]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch bank info data", err);
+    }
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchBankInfoData();
   }, []);
 
   const navigate = useNavigate();
@@ -84,8 +178,9 @@ const BankInfo = () => {
       <div className="container mt-4 mb-5">
         <div className="card shadow-lg p-4">
           <form onSubmit={handleAdd}>
-            <h5 className="fw-bold mb-1" style={{ color: '#2282C1' }}>Bank Info</h5>
-            <hr />
+            <div className="fw-bold text-primary text-center mb-4" style={{ fontSize: "1.5rem", letterSpacing: "0.5px" }}>
+              <i className="bi bi-bank2 me-2"></i> Bank Information
+            </div>
 
             {/* Bank Name */}
             <div className="row mb-3 align-items-center">
@@ -193,8 +288,9 @@ const BankInfo = () => {
             </div>
 
             {isSubmitted && (
-              <div className="text-center fw-bold py-2 mt-2 mx-auto" style={{ backgroundColor: '#ffffcc', border: '1px solid #cccc00', color: '#000', maxWidth: '400px', borderRadius: '4px' }}>
-                ✅ Details Inserted Successfully !!
+              <div className="alert alert-success text-center fw-bold" role="alert">
+                <i className="bi bi-check-circle-fill me-2"></i>
+                Details Inserted Successfully !!
               </div>
             )}
           </form>
@@ -245,8 +341,29 @@ const BankInfo = () => {
               <button type="button" className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/part-c')}>
                 Previous
               </button>
-              <button type="button" className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={handleSubmit}>
-                Save & Continue
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="btn px-4 d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: "#1E59A8",
+                  color: "white",
+                  width: "250px",
+                }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Processing...
+                  </>
+                ) : (
+                  "Save & Continue"
+                )}
               </button>
             </div>
           </div>

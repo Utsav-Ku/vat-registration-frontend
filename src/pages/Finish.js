@@ -10,6 +10,13 @@ const Finish = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    const handleSubmit = () => {
+        localStorage.removeItem('applicationNumber');
+        localStorage.removeItem('token');
+        alert("Application submitted successfully. You will be redirected to the home page.");
+        navigate('/');
+    }
+
     return (
         <div>
             <Header />
@@ -84,9 +91,10 @@ const Finish = () => {
                             Prev
                         </button>
                         <button
+                            type='button'
                             className="btn px-4 fw-bold"
                             style={{ backgroundColor: '#1E59A8', color: 'white', width: '120px' }}
-                            onClick={() => alert('Form Submitted')}
+                            onClick={handleSubmit}
                         >
                             Submit
                         </button>

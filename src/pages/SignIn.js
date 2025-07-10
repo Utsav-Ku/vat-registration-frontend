@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SignIn = () => {
 
     const generatePin = () => {
-        return Math.floor(100000 + Math.random() * 900000).toString();
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let pin = '';
+        for (let i = 0; i < 5; i++) {
+            pin += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return pin;
     };
 
     const navigate = useNavigate();
@@ -15,6 +21,7 @@ const SignIn = () => {
     const [securityPin, setSecurityPin] = useState("");
     const [securityPinText, setSecurityPinText] = useState(generatePin());
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const speakSecurityPin = () => {
         if (isSpeaking) return;
@@ -31,7 +38,7 @@ const SignIn = () => {
         };
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!applicationNo || !password || !securityPin) {
@@ -39,9 +46,38 @@ const SignIn = () => {
             return;
         }
 
-        // Add validation or API integration
+        setLoading(true);
+        if(securityPin !== securityPinText){
+            alert("Invalid Captcha");
+            setSecurityPin("");
+            setLoading(false);
+        }
 
-        navigate('/');
+        const payload = {
+            applicationNumber: applicationNo,
+            password: password,
+            captcha: "A9X3Z"
+        };
+
+        try{
+            const { data } = await axios.post("https://tax-nic-1y21.onrender.com/auth/login", payload);
+
+            if(data.success){
+                alert("Login Successfull!!");
+                const token = data.token;
+                localStorage.setItem("token", token);
+                localStorage.setItem("applicationNumber", applicationNo);
+                navigate("/part-a");
+            } else{
+                alert("Invalid Credentials")
+            }
+
+        } catch (error){
+            alert("Server Error");
+        } finally {
+            setLoading(false);
+        }
+
     };
 
     return (
@@ -153,11 +189,23 @@ const SignIn = () => {
                         <div className="position-relative mb-3">
                             <div className="d-flex justify-content-center">
                                 <button
-                                    type="submit"
-                                    className="btn px-4"
-                                    style={{ backgroundColor: '#1E59A8', color: 'white', width: '250px' }}
+                                type="submit"
+                                className="btn px-4 d-flex align-items-center justify-content-center"
+                                style={{
+                                    backgroundColor: "#1E59A8",
+                                    color: "white",
+                                    width: "250px",
+                                }}
+                                disabled={loading}
                                 >
-                                    Sign In
+                                {loading ? (
+                                    <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Processing...
+                                    </>
+                                ) : (
+                                    "Save & Continue"
+                                )}
                                 </button>
                             </div>
 
@@ -174,7 +222,7 @@ const SignIn = () => {
                         <div className="d-flex justify-content-center mb-3">
                             <button
                                 type="button"
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/part-a')}
                                 className="btn fw-bold px-4"
                                 style={{ backgroundColor: '#FC6C1B', color: 'white', width: '250px' }}
                             >

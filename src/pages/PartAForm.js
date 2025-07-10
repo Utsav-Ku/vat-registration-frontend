@@ -73,9 +73,9 @@ const PartAForm = () => {
       applicantName: form.applicantName,
       fathersName: form.fatherName,
       dateOfBirth: form.dob,
-      gender: form.gender === "Male" ? "M" : "F",
+      gender: form.gender === "Male" ? "M" : form.gender === "Female" ? "F" : "",
       tradingName: form.tradingName,
-      pan: form.pan,
+      pan: form.pan.toUpperCase(),
       address: {
         roomNo: form.roomNo,
         area: form.area,
@@ -92,27 +92,98 @@ const PartAForm = () => {
       }
     };
 
+    console.log("Submitting Payload:", JSON.stringify(payload, null, 2));
+
+
     try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        alert("Details Updated Successfully");
+        navigate("/part-b");
+        return;
+      }
+
       const { data } = await axios.post("https://tax-nic-1y21.onrender.com/registration/part-a", payload);
 
       if (data.success) {
         alert(`Registration Successful!\nApplication No: ${data.applicationNumber}\nPassword: ${data.password}`);
-        localStorage.setItem("applicationNumber", data.applicationNumber); 
+        localStorage.setItem("applicationNumber", data.applicationNumber);
         navigate("/part-b");
       } else {
         alert("Unexpected server response.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error or network issue");
+      console.error("Error:", error.response?.data || error.message);
+      alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchData = async () => {
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/login");
+      return;
+    }
+
+    if (!applicationNumber) {
+      alert("Please complete Part A first to get the application number.");
+      navigate("/part-a");
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `https://tax-nic-1y21.onrender.com/registration/part-a?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = res.data;
+      if (!data) {
+        alert("No saved data found for this application.");
+        return;
+      }
+
+      // Populate the form state with fetched data
+      setForm({
+        registrationType: data.typeOfRegistration || "",
+        office: data.office || "",
+        businessStatus: data.businessConstitution || "",
+        applicantName: data.applicantName || "",
+        fatherName: data.fathersName || "",
+        dob: data.dateOfBirth || "",
+        gender: data.gender === "M" ? "Male" : data.gender === "F" ? "Female" : "",
+        tradingName: data.tradingName || "",
+        pan: data.pan || "",
+        roomNo: data.address?.roomNo || "",
+        area: data.address?.area || "",
+        city: data.address?.village || "",
+        district: data.address?.district || "",
+        pin: data.address?.pinCode || "",
+        occupancy: data.address?.occupancyStatus || "",
+        telephone: data.contact?.telephone || "",
+        mobile: data.contact?.mobile || "",
+        fax: data.contact?.fax || "",
+        email: data.contact?.email || "",
+      });
+
+    } catch (err) {
+      console.error("Error fetching Part A data:", err);
+      alert("Failed to load Part A data. Please try again.");
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchData();
   }, []);
 
   return (
@@ -377,7 +448,7 @@ const PartAForm = () => {
               </select>
             </div>
             <label className="col-6 col-md-2 col-form-label fw-bold mb-0">
-                PIN Code<span style={{ color: "#dc3545" }}>*</span>
+              PIN Code<span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div className="col-12 col-md-2">
               <input
