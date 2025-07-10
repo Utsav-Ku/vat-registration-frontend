@@ -35,12 +35,12 @@ const BankInfo = () => {
     const token = localStorage.getItem("token"); // 👈 Retrieve token
 
     if (!applicationNumber) {
-      alert("Application number not found.");
+      alert("Application number not found. Please complete Part A first.");
       return;
     }
 
     if (!token) {
-      alert("Authorization token missing. Please login again.");
+      alert("Authorization token not found. Please login again.");
       return;
     }
 
@@ -63,18 +63,10 @@ const BankInfo = () => {
       accountType: firstBank.accountType,
     };
 
-    console.log(token);
-
     try {
       const { data } = await axios.post(
         "https://tax-nic-1y21.onrender.com/registration/bank-info",
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        }
+        payload
       );
 
       if (data.success) {
@@ -91,8 +83,50 @@ const BankInfo = () => {
     }
   };
 
+  const fetchBankInfoData = async () => {
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token");
+
+    if (!applicationNumber) {
+      alert("Application number not found. Please complete Part A first.");
+      return;
+    }
+
+    if (!token) {
+      alert("Authorization token not found. Please login again.");
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `https://tax-nic-1y21.onrender.com/registration/bank-info?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = res.data;
+      console.log(data);
+      if (data.bankName && data.accountNumber) {
+        const entry = {
+          bankName: data.bankName,
+          branchName: data.branchAddress,
+          accountNumber: data.accountNumber,
+          accountType: data.accountType,
+          branchCode: data.branchCode,
+        };
+        setBankAccounts([entry]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch bank info data", err);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchBankInfoData();
   }, []);
 
   const navigate = useNavigate();
