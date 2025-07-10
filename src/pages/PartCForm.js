@@ -245,36 +245,47 @@ const PartCForm = () => {
               </div>
             </div>
 
-            <div className="d-flex justify-content-center mt-4">
-              <div className="d-flex" style={{ gap: "30px" }}>
-                <button type="button" className="btn px-4" style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }} onClick={() => navigate("/part-b")}>
-                  Previous
-                </button>
-                <button
-                  type="submit"
-                  className="btn px-4 d-flex align-items-center justify-content-center"
-                  style={{
-                    backgroundColor: "#1E59A8",
-                    color: "white",
-                    width: "250px",
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      Processing...
-                    </>
-                  ) : (
-                    "Save & Continue"
-                  )}
-                </button>
-              </div>
+            <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
+              <button
+                type="button"
+                className="btn px-4"
+                style={{
+                  backgroundColor: "rgb(30, 89, 168)",
+                  color: "white",
+                  width: "100%",
+                  maxWidth: "250px",
+                }}
+                onClick={() => navigate("/part-b")}
+              >
+                Previous
+              </button>
+
+              <button
+                type="submit"
+                className="btn px-4 d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: "#1E59A8",
+                  color: "white",
+                  width: "100%",
+                  maxWidth: "250px",
+                }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Processing...
+                  </>
+                ) : (
+                  "Save & Continue"
+                )}
+              </button>
             </div>
+
           </form>
         </div>
       </div>
