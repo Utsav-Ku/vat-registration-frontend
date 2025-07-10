@@ -7,6 +7,7 @@ import {
   commodities,
 } from "../contants/dropdowns.js";
 import Header from "../components/Header.js";
+import axios from "axios";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -36,30 +37,85 @@ const PartBForm = () => {
 
   const [commodityTable, setCommodityTable] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const form = e.target.form || e.target;
-    const firstInvalid = form.querySelector(":invalid");
+    const token = localStorage.getItem("token");
+    const applicationNumber = localStorage.getItem("applicationNumber") || "202400461707";
 
-    if (firstInvalid) {
-      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
-      firstInvalid.focus();
-      form.reportValidity(); 
+    if (!token) {
+      alert("Authorization token missing. Please log in again.");
+      setLoading(false);
       return;
     }
 
-    const newRow = {
-      econActivity,
-      saleDate,
-      vatType,
-      turnover,
+    const payload = {
+      applicationNumber,
+      residentialAddress: {
+        street: resStreet.trim(),
+        city: resCity.trim(),
+        district: resDistrict,
+        state: resState,
+        country: resCountry,
+        pinCode: resPincode
+      },
+      permanentAddress: {
+        street: permStreet.trim(),
+        city: permCity.trim(),
+        district: permDistrict,
+        state: permState,
+        country: permCountry,
+        pinCode: permPincode
+      },
+      statutoryAuthority: authority,
+      economicActivity: {
+        activityCode: "001",
+        roles: [econActivity]
+      },
+      commodity: commodityTable.length > 0
+        ? {
+            name: commodityTable[0].name,
+            description: commodityTable[0].desc
+          }
+        : {
+            name: "",
+            description: ""
+          },
+      firstTaxableSaleDate: saleDate,
+      vatOption: vatType,
+      estimatedTurnover: parseFloat(turnover),
+      filingFrequency: returnFreq
     };
 
-    setSuccessMessage("Details Inserted Successfully !!");
-    setTimeout(() => setSuccessMessage(""), 3000);
-    navigate("/part-c");
+    console.log("Final Payload:", JSON.stringify(payload, null, 2));
+
+    try {
+      const { data } = await axios.post(
+        "https://tax-nic-1y21.onrender.com/registration/part-b",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (data.success) {
+        alert("Form submitted successfully!");
+        navigate("/part-c");
+      } else {
+        alert(data.message || "Failed to submit Part B.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error.message);
+      alert("An error occurred while submitting the form. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddCommodity = () => {
@@ -113,6 +169,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 value={resStreet}
@@ -127,6 +184,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 value={resCity}
@@ -141,6 +199,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value={resState}
                 onChange={(e) => {
@@ -165,6 +224,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value={resDistrict}
                 onChange={(e) => setResDistrict(e.target.value)}
@@ -187,6 +247,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 value={resPincode}
@@ -209,6 +270,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value="India"
                 disabled
@@ -230,6 +292,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 value={permStreet}
@@ -244,6 +307,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 value={permCity}
@@ -258,6 +322,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value={permState}
                 onChange={(e) => {
@@ -282,6 +347,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value={permDistrict}
                 onChange={(e) => setPermDistrict(e.target.value)}
@@ -289,7 +355,7 @@ const PartBForm = () => {
               >
                 <option value="">Select</option>
                 {resState &&
-                  districtsByState[resState]?.map((district) => (
+                  districtsByState[permState]?.map((district) => (
                     <option key={district} value={district}>
                       {district}
                     </option>
@@ -304,13 +370,14 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
-                value={resPincode}
+                value={permPincode}
                 onChange={(e) => {
                   const input = e.target.value;
                   if (/^\d{0,6}$/.test(input)) {
-                    setResPincode(input);
+                    setPermPincode(input);
                   }
                 }}
                 maxLength="6"
@@ -326,6 +393,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value="India"
                 disabled
@@ -342,6 +410,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value={authority}
                 onChange={(e) => setAuthority(e.target.value)}
@@ -392,6 +461,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <select
+                required
                 className="form-select"
                 value={commodity}
                 onChange={(e) => setCommodity(e.target.value)}
@@ -414,6 +484,7 @@ const PartBForm = () => {
             </label>
             <div className="col-12 col-md-8">
               <textarea
+                required
                 className="form-control"
                 value={commodityDesc}
                 placeholder="DEALER’S DESCRIPTION OF COMMODITY"
@@ -544,6 +615,7 @@ const PartBForm = () => {
 
           {/* Buttons */}
           <div className="d-flex justify-content-center gap-4 mt-4">
+            <div className="d-flex justify-content-center gap-4 mt-4">
             <button
               type="button"
               className="btn px-4"
@@ -558,17 +630,29 @@ const PartBForm = () => {
             </button>
 
             <button
-              type="button"
-              className="btn px-4"
+              type="submit"
+              className="btn px-4 d-flex align-items-center justify-content-center"
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
                 width: "250px",
               }}
-              onClick={handleSubmit}
+              disabled={loading}
             >
-              Save & Continue
+              {loading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Processing...
+                </>
+              ) : (
+                "Save & Continue"
+              )}
             </button>
+          </div>
           </div>
         </form>
       </div>

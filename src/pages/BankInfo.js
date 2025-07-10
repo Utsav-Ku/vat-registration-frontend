@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -11,6 +12,7 @@ const BankInfo = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [bankAccounts, setBankAccounts] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setBankName("");
@@ -21,14 +23,70 @@ const BankInfo = () => {
     setSelectedIndex(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    if (!form.checkValidity()) {
-      form.reportValidity(); 
+
+    if (bankAccounts.length === 0) {
+      alert("Please add at least one bank account before continuing.");
       return;
     }
-    navigate("/additional-business-places");
+
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token"); // 👈 Retrieve token
+
+    if (!applicationNumber) {
+      alert("Application number not found.");
+      return;
+    }
+
+    if (!token) {
+      alert("Authorization token missing. Please login again.");
+      return;
+    }
+
+    setLoading(true);
+
+    const firstBank = bankAccounts[0];
+
+    if (!firstBank.bankName || !firstBank.branchName || !firstBank.accountNumber || !firstBank.accountType || !firstBank.branchCode) {
+      alert("Incomplete bank account details.");
+      setLoading(false);
+      return;
+    }
+
+    const payload = {
+      applicationNumber,
+      bankName: firstBank.bankName,
+      branchAddress: firstBank.branchName,
+      accountNumber: firstBank.accountNumber,
+      branchCode: firstBank.branchCode,
+      accountType: firstBank.accountType,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "https://tax-nic-1y21.onrender.com/registration/bank-info",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (data.success) {
+        alert("Bank Info saved successfully.");
+        navigate("/additional-business-places");
+      } else {
+        alert(data.message || "Failed to save Bank Info.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong while submitting bank info.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -84,8 +142,9 @@ const BankInfo = () => {
       <div className="container mt-4 mb-5">
         <div className="card shadow-lg p-4">
           <form onSubmit={handleAdd}>
-            <h5 className="fw-bold mb-1" style={{ color: '#2282C1' }}>Bank Info</h5>
-            <hr />
+            <div className="fw-bold text-primary text-center mb-4" style={{ fontSize: "1.5rem", letterSpacing: "0.5px" }}>
+              <i className="bi bi-bank2 me-2"></i> Bank Information
+            </div>
 
             {/* Bank Name */}
             <div className="row mb-3 align-items-center">
@@ -246,8 +305,29 @@ const BankInfo = () => {
               <button type="button" className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/part-c')}>
                 Previous
               </button>
-              <button type="button" className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={handleSubmit}>
-                Save & Continue
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="btn px-4 d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: "#1E59A8",
+                  color: "white",
+                  width: "250px",
+                }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Processing...
+                  </>
+                ) : (
+                  "Save & Continue"
+                )}
               </button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const BusinessPartnerDetails = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const BusinessPartnerDetails = () => {
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [tableRows, setTableRows] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const maxFileSize = 500 * 1024;
 
@@ -91,6 +93,79 @@ const BusinessPartnerDetails = () => {
     navigate("/upload-document");
   };
 
+  const handleSubmission = async (e) => {
+
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/sign-in");
+      return;
+    }
+
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    if (!applicationNumber) {
+      alert("Application number not found. Please start a new application.");
+      navigate("/part-a");
+      return;
+    }
+
+    setLoading(true);
+
+    const payload = {
+      applicationNumber: applicationNumber,
+      partnerType,
+      name: personName,
+      fathersName: fatherName,
+      dateOfBirth: dob,
+      designation,
+      qualification: education,
+      pan,
+      presentAddress,
+      area: locality,
+      village,
+      permanentAddress,
+      contact: {
+        telephone: tel,
+        fax,
+        email,
+      },
+      interestPercent: parseFloat(interest) || 0,
+      partnershipDates: {
+        entryDate,
+        exitDate,
+      },
+      electoralDetails: {
+        voterId,
+        residentialCertNo: residentialCert,
+      },
+    };
+
+    try {
+      const { data } = await axios.post("https://tax-nic-1y21.onrender.com/registration/partner", 
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+
+      if (data.success) {
+        alert("Business Partner Details added successfully!");
+        navigate("/business-partner-details");
+      }
+
+    } catch (error) {
+      console.error("Error submitting business partner details:", error);
+      alert("An error occurred while submitting the details. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -99,7 +174,7 @@ const BusinessPartnerDetails = () => {
     <div>
       <Header />
       <div className="container my-4">
-        <form className="border p-4 rounded shadow bg-white" onSubmit={handleSubmit}>
+        <form className="border p-4 rounded shadow bg-white" onSubmit={handleSubmission}>
           <div className="fw-bold text-primary text-center mb-4" style={{ fontSize: '1.5rem', letterSpacing: '0.5px' }}>
             <i className="bi bi-people-fill me-2"></i>
             Business Partner Details
@@ -112,6 +187,7 @@ const BusinessPartnerDetails = () => {
             <div className="col-12 col-md-8 d-flex align-items-center gap-4">
                 <div className="form-check">
                 <input
+                    required
                     className="form-check-input"
                     type="checkbox"
                     id="contactPerson"
@@ -160,6 +236,7 @@ const BusinessPartnerDetails = () => {
             </label>
             <div className="col-12 col-md-8">
               <input
+                required
                 type="text"
                 className="form-control"
                 name="fatherName"
@@ -175,6 +252,7 @@ const BusinessPartnerDetails = () => {
             </label>
             <div className="col-12 col-md-4">
               <input
+                required
                 type="date"
                 className="form-control"
                 name="dob"
@@ -561,11 +639,25 @@ const BusinessPartnerDetails = () => {
               width: "250px"
             }} onClick={() => navigate('/additional-business-places')}>Previous</button>
 
-            <button type="submit" className="btn px-4" style={{
-              backgroundColor: "#1E59A8",
-              color: "white",
-              width: "250px"
-            }} >Save & Continue</button>
+            <button
+              type="submit"
+              className="btn px-4 d-flex align-items-center justify-content-center"
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+                width: "250px",
+              }}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Processing...
+                </>
+              ) : (
+                "Save & Continue"
+              )}
+            </button>
           </div>
         </form>
       </div>

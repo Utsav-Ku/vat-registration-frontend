@@ -15,14 +15,22 @@ const PartCForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
+
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
     const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token"); // 👈 Get token from localStorage
+
     if (!applicationNumber) {
       alert("Application number not found. Please complete Part A first.");
+      return;
+    }
+
+    if (!token) {
+      alert("Authorization token not found. Please login again.");
       return;
     }
 
@@ -54,7 +62,16 @@ const PartCForm = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post("https://tax-nic-1y21.onrender.com/registration/part-c", payload);
+      const res = await axios.post(
+        "https://tax-nic-1y21.onrender.com/registration/part-c",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 👈 Send token in header
+            "Content-Type": "application/json"
+          }
+        }
+      );
 
       if (res.data.success) {
         alert("Part-C saved successfully.");
@@ -227,23 +244,35 @@ const PartCForm = () => {
             </div>
 
             <div className="d-flex justify-content-center mt-4">
-              {loading ? (
-                <button className="btn btn-secondary px-5" disabled>
-                  <span className="spinner-border spinner-border-sm me-2"></span>
-                  Saving...
+              <div className="d-flex" style={{ gap: "30px" }}>
+                <button type="button" className="btn px-4" style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }} onClick={() => navigate("/part-b")}>
+                  Previous
                 </button>
-              ) : (
-                <div className="d-flex" style={{ gap: "30px" }}>
-                  <button type="button" className="btn px-4" style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }} onClick={() => navigate("/part-b")}>
-                    Previous
-                  </button>
-                  <button type="submit" className="btn px-4" style={{ backgroundColor: "rgb(30, 89, 168)", color: "white", width: "250px" }}>
-                    Save & Continue
-                  </button>
-                </div>
-              )}
+                <button
+                  type="submit"
+                  className="btn px-4 d-flex align-items-center justify-content-center"
+                  style={{
+                    backgroundColor: "#1E59A8",
+                    color: "white",
+                    width: "250px",
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Processing...
+                    </>
+                  ) : (
+                    "Save & Continue"
+                  )}
+                </button>
+              </div>
             </div>
-
           </form>
         </div>
       </div>

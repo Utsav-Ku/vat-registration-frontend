@@ -73,9 +73,9 @@ const PartAForm = () => {
       applicantName: form.applicantName,
       fathersName: form.fatherName,
       dateOfBirth: form.dob,
-      gender: form.gender === "Male" ? "M" : "F",
+      gender: form.gender === "Male" ? "M" : form.gender === "Female" ? "F" : "",
       tradingName: form.tradingName,
-      pan: form.pan,
+      pan: form.pan.toUpperCase(),
       address: {
         roomNo: form.roomNo,
         area: form.area,
@@ -92,6 +92,9 @@ const PartAForm = () => {
       }
     };
 
+    console.log("Submitting Payload:", JSON.stringify(payload, null, 2));
+
+
     try {
       const { data } = await axios.post("https://tax-nic-1y21.onrender.com/registration/part-a", payload);
 
@@ -103,8 +106,8 @@ const PartAForm = () => {
         alert("Unexpected server response.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error or network issue");
+      console.error("Error:", error.response?.data || error.message);
+      alert("Error: " + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }

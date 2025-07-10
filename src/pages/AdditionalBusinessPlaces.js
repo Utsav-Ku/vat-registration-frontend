@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AdditionalBusinessPlaces() {
   const [formData, setFormData] = useState({
@@ -24,6 +25,8 @@ export default function AdditionalBusinessPlaces() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const formRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,14 +81,76 @@ export default function AdditionalBusinessPlaces() {
     resetForm();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    if (!form.checkValidity()) {
-      form.reportValidity(); 
+
+    if (records.length === 0) {
+      alert("Please add at least one additional business place before submitting.");
       return;
     }
-    navigate("/business-partner-details");
+
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/login");
+      return;
+    }
+
+    if (!applicationNumber) {
+      alert("Please complete Part A first to get the application number.");
+      navigate("/part-a");
+      return;
+    }
+
+    setLoading(true);
+
+    const payload = {
+      applicationNumber,
+      additionalBusinessPlaces: records.map((rec) => ({
+        applicantName: rec.applicantName,
+        businessLocation: rec.businessLocation,
+        registrationNumbers: {
+          underStateAct: rec.stateAct,
+          underCSTAct: rec.cstAct,
+        },
+        branchType: rec.branchType,
+        branchName: rec.name,
+        address: {
+          street: rec.street,
+          area: rec.area,
+          city: rec.city,
+          district: rec.district,
+          state: rec.state,
+          pinCode: rec.pinCode,
+          tel: rec.tel,
+        },
+        erdDate: rec.fdrDate,
+      })),
+    };
+
+    try {
+      const { data } = await axios.post(
+        "https://tax-nic-1y21.onrender.com/registration/additional-business-place",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (data.success) {
+        alert("Additional Business Places added successfully!");
+        navigate("/business-partner-details");
+      }
+    } catch (error) {
+      alert("Error adding additional business places. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -97,7 +162,9 @@ export default function AdditionalBusinessPlaces() {
       <Header />
       <div className="container mt-4 mb-5">
         <div className="card shadow-lg p-4">
-          <form onSubmit={handleAdd}>
+
+          {/* Form START */}
+          <form onSubmit={handleAdd} ref={formRef}>
             <div className="d-flex justify-content-center align-items-center mb-3">
               <i className="bi bi-building" style={{ fontSize: "1.5rem", color: "#2282C1", marginRight: "8px" }}></i>
               <h5 className="fw-bold mb-0" style={{ color: '#2282C1' }}>Additional Business Places</h5>
@@ -111,14 +178,31 @@ export default function AdditionalBusinessPlaces() {
             </div>
 
             <div className="row mb-3 align-items-center">
-              <label className="col-sm-3 col-form-label fw-bold">Location of Business</label>
+              <label className="col-sm-3 col-form-label fw-bold">
+                Location of Business<span className="text-danger">*</span>
+              </label>
               <div className="col-sm-9">
                 <div className="form-check form-check-inline">
-                  <input className="form-check-input" type="radio" name="businessLocation" value="within" checked={formData.businessLocation === "within"} onChange={handleChange} />
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="businessLocation"
+                    value="within"
+                    checked={formData.businessLocation === "within"}
+                    onChange={handleChange}
+                    required
+                  />
                   <label className="form-check-label">Within State</label>
                 </div>
                 <div className="form-check form-check-inline">
-                  <input className="form-check-input" type="radio" name="businessLocation" value="outside" checked={formData.businessLocation === "outside"} onChange={handleChange} />
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="businessLocation"
+                    value="outside"
+                    checked={formData.businessLocation === "outside"}
+                    onChange={handleChange}
+                  />
                   <label className="form-check-label">Outside State</label>
                 </div>
               </div>
@@ -151,7 +235,7 @@ export default function AdditionalBusinessPlaces() {
             <div className="row mb-3">
               <div className="col">
                 <label className="fw-bold">Branch Type</label>
-                <select className="form-select" name="branchType" value={formData.branchType} onChange={handleChange}>
+                <select required className="form-select" name="branchType" value={formData.branchType} onChange={handleChange}>
                   <option>Warehouse</option>
                   <option>Godown</option>
                   <option>Branch Office</option>
@@ -178,22 +262,22 @@ export default function AdditionalBusinessPlaces() {
             <div className="row mb-3">
               <div className="col">
                 <label className="fw-bold">City</label>
-                <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} />
+                <input required type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} />
               </div>
               <div className="col">
                 <label className="fw-bold">District</label>
-                <input type="text" className="form-control bg-light" name="district" value={formData.district} readOnly />
+                <input required type="text" className="form-control bg-light" name="district" value={formData.district} readOnly />
               </div>
             </div>
 
             <div className="row mb-3">
               <div className="col">
                 <label className="fw-bold">PIN Code<span className="text-danger">*</span></label>
-                <input type="text" className="form-control" name="pinCode" value={formData.pinCode} onChange={handleChange} required />
+                <input required type="text" className="form-control" name="pinCode" value={formData.pinCode} onChange={handleChange} />
               </div>
               <div className="col">
                 <label className="fw-bold">State</label>
-                <input type="text" className="form-control bg-light" name="state" value={formData.state} readOnly />
+                <input required type="text" className="form-control bg-light" name="state" value={formData.state} readOnly />
               </div>
             </div>
 
@@ -213,14 +297,15 @@ export default function AdditionalBusinessPlaces() {
               <button className="btn" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '125px' }} type="button" disabled={selectedIndex === null} onClick={handleUpdate}>[↓] Update</button>
               <button className="btn" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '125px' }} type="button" disabled={selectedIndex === null} onClick={handleDelete}>[X] Delete</button>
             </div>
-
-            {isSubmitted && (
-              <div className="alert alert-success text-center fw-bold" role="alert">
-                <i className="bi bi-check-circle-fill me-2"></i>
-                Business Place Added Successfully !!
-              </div>
-            )}
           </form>
+          {/* Form END */}
+
+          {isSubmitted && (
+            <div className="alert alert-success text-center fw-bold" role="alert">
+              <i className="bi bi-check-circle-fill me-2"></i>
+              Business Place Added Successfully !!
+            </div>
+          )}
 
           <h6 className="fw-bold mb-1 mt-3" style={{ color: 'rgb(34, 130, 193)' }}>List of Additional Business Places</h6>
           <hr className="my-1" />
@@ -258,7 +343,26 @@ export default function AdditionalBusinessPlaces() {
 
           <div className="d-flex justify-content-center mt-4" style={{ gap: '30px' }}>
             <button className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/bank-info')}>Previous</button>
-            <button className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={handleSubmit}>Save & Continue</button>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn px-4 d-flex align-items-center justify-content-center"
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+                width: "250px",
+              }}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Processing...
+                </>
+              ) : (
+                "Save & Continue"
+              )}
+            </button>
           </div>
         </div>
       </div>
