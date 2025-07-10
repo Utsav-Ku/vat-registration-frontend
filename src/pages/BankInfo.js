@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { bankOptions } from '../constants/dropDowns';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -183,83 +184,81 @@ const BankInfo = () => {
             </div>
 
             {/* Bank Name */}
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-3 col-form-label fw-bold">
+            <div className="mb-3 row">
+              <label className="col-12 col-md-4 col-form-label fw-bold">
                 Bank Name<span className="text-danger">*</span>
               </label>
-              <div className="col-sm-9">
-                <select className="form-select" value={bankName} onChange={(e) => setBankName(e.target.value)} required>
+              <div className="col-12 col-md-8">
+                <select 
+                  className="form-select" 
+                  value={bankName} 
+                  onChange={(e) => setBankName(e.target.value)} 
+                  required
+                >
                   <option value="" disabled>Select Your Bank</option>
-                  <option>Agartala Cooperative Urban Bank Ltd.</option>
-                  <option>Allahabad Bank</option>
-                  <option>Andhra Bank</option>
-                  <option>Axis Bank</option>
-                  <option>Bank of Baroda</option>
-                  <option>Bank of India</option>
-                  <option>Bank of Maharashtra</option>
-                  <option>Canara Bank</option>
-                  <option>Central Bank of India</option>
-                  <option>CITIBANK</option>
-                  <option>Corporation Bank</option>
-                  <option>Dena Bank</option>
-                  <option>FEDERAL BANK</option>
-                  <option>HDFC Bank</option>
-                  <option>Hongkong Shanghai Banking Corp.Ltd.</option>
-                  <option>ICICI Bank</option>
-                  <option>IDBI Bank</option>
-                  <option>Indian Bank</option>
-                  <option>Indian Overseas Bank</option>
-                  <option>Indus Bank</option>
-                  <option>Oriental Bank of Commerce</option>
-                  <option>Punjab and Sind Bank</option>
-                  <option>Punjab National Bank</option>
-                  <option>South Indian Bank Ltd.</option>
-                  <option>Standard Chartered Bank</option>
-                  <option>State Bank of India</option>
-                  <option>Syndicate Bank</option>
-                  <option>Tripura Gramin Bank</option>
-                  <option>Tripura State Co-operative Bank Ltd.</option>
-                  <option>Union Bank of India</option>
-                  <option>United Bank of India</option>
-                  <option>United Commercial Bank</option>
-                  <option>Vijaya Bank</option>
-                  <option>Yes Bank</option>
+                  {bankOptions.map((bank, index) => (
+                    <option key={index} value={bank}>{bank}</option>
+                  ))}
                 </select>
               </div>
             </div>
 
             {/* Branch Name */}
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-3 col-form-label fw-bold">
+            <div className="mb-3 row">
+              <label className="col-12 col-md-4 col-form-label fw-bold">
                 Branch Name, Address<span className="text-danger">*</span>
               </label>
-              <div className="col-sm-9">
-                <input type="text" placeholder="Enter Branch Name" className="form-control" value={branchName} onChange={(e) => setBranchName(e.target.value)} required />
+              <div className="col-12 col-md-8">
+                <input
+                  type="text"
+                  placeholder="Enter Branch Name"
+                  className="form-control"
+                  value={branchName}
+                  onChange={(e) => setBranchName(e.target.value)}
+                  required
+                />
               </div>
             </div>
 
             {/* Account Number */}
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-3 col-form-label fw-bold">
+            <div className="mb-3 row">
+              <label className="col-12 col-md-4 col-form-label fw-bold">
                 Account Number<span className="text-danger">*</span>
               </label>
-              <div className="col-sm-9">
-                <input type="text" placeholder="Enter Account Number" className="form-control" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
+              <div className="col-12 col-md-8">
+                <input
+                  type="text"
+                  placeholder="Enter Account Number"
+                  className="form-control"
+                  value={accountNumber}
+                  onChange={(e) => setAccountNumber(e.target.value)}
+                  required
+                />
               </div>
             </div>
 
             {/* Branch Code */}
-            <div className="row mb-3 align-items-center">
-              <label className="col-sm-3 col-form-label fw-bold">Branch Code</label>
-              <div className="col-sm-9">
-                <input type="text" placeholder="Enter Branch Code" className="form-control" value={branchCode} onChange={(e) => setBranchCode(e.target.value)} />
+            <div className="mb-3 row">
+              <label className="col-12 col-md-4 col-form-label fw-bold">
+                Branch Code
+              </label>
+              <div className="col-12 col-md-8">
+                <input
+                  type="text"
+                  placeholder="Enter Branch Code"
+                  className="form-control"
+                  value={branchCode}
+                  onChange={(e) => setBranchCode(e.target.value)}
+                />
               </div>
             </div>
 
             {/* Account Type */}
-            <div className="row mb-4 align-items-center">
-              <label className="col-sm-3 col-form-label fw-bold">Type of Account</label>
-              <div className="col-sm-9">
+            <div className="mb-3 row">
+              <label className="col-12 col-md-4 col-form-label fw-bold">
+                Type of Account
+              </label>
+              <div className="col-12 col-md-8">
                 <select className="form-select" value={accountType} onChange={(e) => setAccountType(e.target.value)}>
                   <option value="" disabled>Select Your Account Type</option>
                   <option>Savings Account</option>
