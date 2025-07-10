@@ -66,6 +66,7 @@ const SignIn = () => {
                 alert("Login Successfull!!");
                 const token = data.token;
                 localStorage.setItem("token", token);
+                localStorage.setItem("applicationNumber", applicationNo);
                 navigate("/part-a");
             } else{
                 alert("Invalid Credentials")

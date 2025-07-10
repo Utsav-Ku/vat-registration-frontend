@@ -108,27 +108,24 @@ export default function AdditionalBusinessPlaces() {
 
     const payload = {
       applicationNumber,
-      additionalBusinessPlaces: records.map((rec) => ({
-        applicantName: rec.applicantName,
-        businessLocation: rec.businessLocation,
-        registrationNumbers: {
-          underStateAct: rec.stateAct,
-          underCSTAct: rec.cstAct,
-        },
-        branchType: rec.branchType,
-        branchName: rec.name,
-        address: {
-          street: rec.street,
-          area: rec.area,
-          city: rec.city,
-          district: rec.district,
-          state: rec.state,
-          pinCode: rec.pinCode,
-          tel: rec.tel,
-        },
-        erdDate: rec.fdrDate,
-      })),
+      applicantName: records[0].applicantName,
+      location: records[0].businessLocation === 'within' ? 'Within State' : 'Outside State',
+      registrationNo: records[0].cstAct,
+      underStateAct: records[0].stateAct,
+      branchType: records[0].branchType,
+      name: records[0].name,
+      street: records[0].street,
+      area: records[0].area,
+      city: records[0].city,
+      district: records[0].district,
+      state: records[0].state,
+      pinCode: records[0].pinCode,
+      telephone: records[0].tel,
+      edrDate: records[0].fdrDate,
     };
+
+
+    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
     try {
       const { data } = await axios.post(
@@ -136,8 +133,8 @@ export default function AdditionalBusinessPlaces() {
         payload,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

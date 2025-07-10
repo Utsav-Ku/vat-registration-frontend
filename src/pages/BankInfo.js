@@ -63,6 +63,8 @@ const BankInfo = () => {
       accountType: firstBank.accountType,
     };
 
+    console.log(token);
+
     try {
       const { data } = await axios.post(
         "https://tax-nic-1y21.onrender.com/registration/bank-info",

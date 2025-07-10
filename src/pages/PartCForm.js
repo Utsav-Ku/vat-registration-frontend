@@ -34,6 +34,8 @@ const PartCForm = () => {
       return;
     }
 
+    console.log(token);
+
     const payload = {
       applicationNumber,
       centralExciseRegNo: form[0].value,

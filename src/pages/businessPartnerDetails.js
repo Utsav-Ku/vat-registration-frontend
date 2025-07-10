@@ -155,7 +155,7 @@ const BusinessPartnerDetails = () => {
 
       if (data.success) {
         alert("Business Partner Details added successfully!");
-        navigate("/business-partner-details");
+        navigate("/upload-document");
       }
 
     } catch (error) {

@@ -117,9 +117,70 @@ const DocumentUpload = () => {
         }
     };
 
+    const fetchUploadedDocuments = async () => {
+        const token = localStorage.getItem('token');
+        const applicationNumber = localStorage.getItem('applicationNumber');
+
+        if(!token){
+            alert("You are not logged in. Please log in to continue.");
+            navigate("/sign-in");
+            return;
+        }
+        if(!applicationNumber){
+            alert("Application number not found. Please start a new application.");
+            navigate("/part-a");
+            return;
+        }
+
+        const mapDocTypeToLabel = (type) => {
+            switch (type) {
+                case "ID":
+                    return "Identity Proof";
+                case "ADDRESS":
+                    return "Address Proof of Business Place";
+                case "PAN":
+                    return "PAN Card";
+                case "PHOTO":
+                    return "Photograph";
+                default:
+                    return type;
+            }
+        };
+
+        const getFileExtension = (filename) => {
+            return filename?.substring(filename.lastIndexOf(".")) || "";
+        };
+
+        try {
+            const response = await axios.get(`https://tax-nic-1y21.onrender.com/registration/documents?applicationNumber=${applicationNumber}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+
+            if(response.status === 200 && Array.isArray(response.data)){
+                const docs = response.data.map(doc => ({
+                    name: mapDocTypeToLabel(doc.docType),
+                    type: getFileExtension(doc.filename),
+                    size: doc.docSize,
+                    file: null, // no actual File object when fetched
+                    filename: doc.filename,
+                    uploadedOn: doc.uploadedOn
+                }));
+                setUploadedDocs(docs);
+            }
+
+        } catch (error) {
+            alert("Failed to fetch uploaded documents. Please try again later.");
+            console.error("Error fetching documents:", error);
+        }
+    }
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        fetchUploadedDocuments();
     }, []);
 
     return (
