@@ -139,8 +139,90 @@ const PartBForm = () => {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    const applicationNumber = localStorage.getItem("applicationNumber");
+
+    if (!token || !applicationNumber) {
+      console.warn("Token or application number missing");
+      return;
+    }
+
+    try {
+      const { data } = await axios.get(
+        `https://tax-nic-1y21.onrender.com/registration/part-b?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data) {
+        // Residential Address
+        if (data.residentialAddress) {
+          setResStreet(data.residentialAddress.street || "");
+          setResCity(data.residentialAddress.city || "");
+          setResDistrict(data.residentialAddress.district || "");
+          setResState(data.residentialAddress.state || "");
+          setResCountry(data.residentialAddress.country || "INDIA");
+          setResPincode(data.residentialAddress.pinCode || "");
+        }
+
+        // Permanent Address
+        if (data.permanentAddress) {
+          setPermStreet(data.permanentAddress.street || "");
+          setPermCity(data.permanentAddress.city || "");
+          setPermDistrict(data.permanentAddress.district || "");
+          setPermState(data.permanentAddress.state || "");
+          setPermCountry(data.permanentAddress.country || "INDIA");
+          setPermPincode(data.permanentAddress.pinCode || "");
+        }
+
+        // Statutory Authority
+        if (data.statutoryAuthority)
+          setAuthority(data.statutoryAuthority);
+
+        // Economic Activity
+        if (data.economicActivity?.roles?.length > 0)
+          setEconActivity(data.economicActivity.roles[0]);
+
+        // Commodity
+        if (data.commodity?.name && data.commodity?.description) {
+          setCommodityTable([
+            {
+              act: "VAT",
+              code: data.commodity.name === "Battery water, De-mineralised water" ? "218601" : "608600",
+              name: data.commodity.name,
+              desc: data.commodity.description
+            }
+          ]);
+        }
+
+        // Sale date
+        if (data.firstTaxableSaleDate)
+          setSaleDate(data.firstTaxableSaleDate);
+
+        // VAT Option
+        if (data.vatOption)
+          setVatType(data.vatOption);
+
+        // Estimated Turnover
+        if (data.estimatedTurnover)
+          setTurnover(String(data.estimatedTurnover));
+
+        // Filing Frequency
+        if (data.filingFrequency)
+          setReturnFreq(data.filingFrequency);
+      }
+    } catch (error) {
+      console.error("Error fetching Part B data:", error.message);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchData();
   }, []);
 
   return (
