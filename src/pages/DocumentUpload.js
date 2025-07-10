@@ -109,8 +109,7 @@ const DocumentUpload = () => {
         } catch (error) {
             console.error("Upload error:", error);
             alert(
-                error.response?.data?.message ||
-                "Something went wrong during upload. Please try again."
+                "An error occurred while submitting the form. Please try again."
             );
         } finally {
             setSaving(false);

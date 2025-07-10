@@ -83,7 +83,7 @@ const PartCForm = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
     }

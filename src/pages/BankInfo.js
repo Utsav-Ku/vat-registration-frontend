@@ -85,7 +85,7 @@ const BankInfo = () => {
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong while submitting bank info.");
+      alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
     }

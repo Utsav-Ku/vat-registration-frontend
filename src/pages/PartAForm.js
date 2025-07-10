@@ -107,7 +107,7 @@ const PartAForm = () => {
       }
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
-      alert("Error: " + (error.response?.data?.message || error.message));
+      alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -160,7 +160,7 @@ const BusinessPartnerDetails = () => {
 
     } catch (error) {
       console.error("Error submitting business partner details:", error);
-      alert("An error occurred while submitting the details. Please try again.");
+      alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
     }
