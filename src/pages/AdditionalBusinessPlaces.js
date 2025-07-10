@@ -150,8 +150,64 @@ export default function AdditionalBusinessPlaces() {
     }
   };
 
+  const fetchAdditionalBusinessPlaces  = async () => {
+    const token = localStorage.getItem("token");
+    const applicationNumber = localStorage.getItem("applicationNumber");
+
+    if(!token){
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/login");
+      return;
+    }
+
+    if(!applicationNumber){
+      alert("Please complete Part A first to get the application number.");
+      navigate("/part-a");
+      return;
+    }
+
+    try {
+
+      const response = await axios.get(`https://tax-nic-1y21.onrender.com/registration/additional-business-place?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (Array.isArray(response.data)) {
+        const mapped = response.data.map((item) => ({
+          applicantName: "",
+          businessLocation: item.branchLoc === "W" ? "within" : "outside",
+          stateAct: item.regStateAct || "",
+          cstAct: item.regCstAct || "",
+          branchType: item.branchType || "",
+          name: item.name || "",
+          street: item.addr1 || "",
+          area: item.addr2 || "",
+          city: item.place || "",
+          district: "West Tripura",
+          state: item.stCode || "Tripura",
+          pinCode: item.pin?.toString() || "",
+          tel: item.phone || "",
+          fdrDate: item.edrAmendDate || ""
+        }));
+
+        setRecords(mapped);
+      }
+
+
+
+    } catch (error) {
+      console.error("Error fetching additional business places:", error);
+      alert("Failed to fetch additional business places. Please try again later.");
+    }
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchAdditionalBusinessPlaces();
   }, []);
 
   return (

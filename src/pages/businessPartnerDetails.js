@@ -166,8 +166,64 @@ const BusinessPartnerDetails = () => {
     }
   }
 
+  const fetchPartnerDetails = async () => {
+    const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/sign-in");
+      return;
+    }
+
+    if (!applicationNumber) {
+      alert("Application number not found. Please complete Part A first.");
+      navigate("/part-a");
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://tax-nic-1y21.onrender.com/registration/partner?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data?.[0]; // Assuming only one partner detail returned
+      if (data) {
+        setPartnerType(data.partnerType || '');
+        setPersonName(data.name || '');
+        setFatherName(data.fathersName || '');
+        setDob(data.dateOfBirth || '');
+        setDesignation(data.designation || '');
+        setEducation(data.qualification || '');
+        setPan(data.pan || '');
+        setPresentAddress(data.addressLine1 || '');
+        setLocality(data.area || '');
+        setVillage(data.village || '');
+        setPermanentAddress(data.permanentAddress1 || '');
+        setTel(data.telephone || '');
+        setFax(data.fax || '');
+        setEmail(data.email || '');
+        setInterest(data.interestPercent?.toString() || '');
+        setEntryDate(data.entryDate || '');
+        setExitDate(data.exitDate || '');
+        setVoterId(data.voterId || '');
+        setResidentialCert(data.residentialCertNo || '');
+      }
+
+    } catch (error) {
+      console.error("Failed to fetch partner details:", error);
+      alert("Unable to load previously saved data.");
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchPartnerDetails();
   }, []);
 
   return (
