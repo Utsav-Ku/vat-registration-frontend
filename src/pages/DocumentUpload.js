@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const DocumentUpload = () => {
-
     const navigate = useNavigate();
     const [documentType, setDocumentType] = useState('');
     const [fileType, setFileType] = useState('');
     const [file, setFile] = useState(null);
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
+    const [saving, setSaving] = useState(false);
     const maxFileSize = 500 * 1024;
 
     const handleFileChange = (e) => {
@@ -32,7 +33,8 @@ const DocumentUpload = () => {
         const newDoc = {
             name: documentType,
             type: fileType,
-            size: `${Math.round(file.size / 1024)} KB`
+            size: `${Math.round(file.size / 1024)} KB`,
+            file: file,
         };
 
         setUploadedDocs([...uploadedDocs, newDoc]);
@@ -44,6 +46,77 @@ const DocumentUpload = () => {
 
         setTimeout(() => setSuccessMessage(''), 3000);
     };
+
+    const handleSaveAndContinue = async () => {
+        const applicationNumber = localStorage.getItem('applicationNumber');
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            alert("You are not logged in. Please log in to continue.");
+            navigate("/sign-in");
+            return;
+        }
+
+        if (!applicationNumber) {
+            alert("Application number not found. Please start a new application.");
+            navigate("/part-a");
+            return;
+        }
+
+
+        const formData = new FormData();
+        formData.append('applicationNumber', applicationNumber);
+
+        let hasIdProof = false;
+        let hasAddressProof = false;
+
+        uploadedDocs.forEach(doc => {
+            if (doc.name === 'Identity Proof') {
+                formData.append('idProof', doc.file);
+                hasIdProof = true;
+            } else if (doc.name === 'Address Proof of Business Place') {
+                formData.append('addressProof', doc.file);
+                hasAddressProof = true;
+            }
+        });
+
+        if (!hasIdProof || !hasAddressProof) {
+            alert("Please upload both Identity Proof and Address Proof before proceeding.");
+            return;
+        }
+
+        setSaving(true);
+
+        try {
+            const response = await axios.post(
+                'https://tax-nic-1y21.onrender.com/registration/documents',
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+
+            if (response.data?.success) {
+                alert("Documents uploaded successfully.");
+                navigate('/finish');
+            } else {
+                alert(response.data?.message || "Upload failed. Try again.");
+            }
+
+        } catch (error) {
+            console.error("Upload error:", error);
+            alert(
+                error.response?.data?.message ||
+                "Something went wrong during upload. Please try again."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -164,9 +237,17 @@ const DocumentUpload = () => {
                         <button
                             className="btn fw-bold px-4"
                             style={{ backgroundColor: '#1E59A8', color: 'white', width: '200px' }}
-                            onClick={() => navigate('/finish')}
+                            onClick={handleSaveAndContinue}
+                            disabled={saving}
                         >
-                            Save & Continue
+                            {saving ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Saving...
+                                </>
+                            ) : (
+                                "Save & Continue"
+                            )}
                         </button>
                     </div>
 
