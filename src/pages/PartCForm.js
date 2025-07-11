@@ -7,9 +7,75 @@ const PartCForm = () => {
   const navigate = useNavigate();
   const [isCitizen, setIsCitizen] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [centralExciseRegNo, setCentralExciseRegNo] = useState("");
+  const [tradeLicenseNo, setTradeLicenseNo] = useState("");
+  const [tradeLicenseIssueDate, setTradeLicenseIssueDate] = useState("");
+  const [tradeLicenseRenewalDate, setTradeLicenseRenewalDate] = useState("");
+  const [accountLanguage, setAccountLanguage] = useState("");
+  const [accountingYearFrom, setAccountingYearFrom] = useState("");
+  const [accountingYearTo, setAccountingYearTo] = useState("");
+  const [saleLastQuarter, setSaleLastQuarter] = useState("");
+  const [saleLastYear, setSaleLastYear] = useState("");
+  const [shopLicenseNo, setShopLicenseNo] = useState("");
+  const [shopIssueDate, setShopIssueDate] = useState("");
+  const [foodLicenseNo, setFoodLicenseNo] = useState("");
+  const [foodIssueDate, setFoodIssueDate] = useState("");
+  const [applicantName, setApplicantName] = useState("");
+  const [role, setRole] = useState("");
+  const [designation, setDesignation] = useState("");
+
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    const applicationNumber = localStorage.getItem("applicationNumber");
+
+    if (!token) {
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/login");
+      return;
+    }
+
+    if (!applicationNumber) {
+      alert("Please complete Part A first to get the application number.");
+      navigate("/part-a");
+      return;
+    }
+
+    try {
+      const res = await axios.get(`https://tax-nic-1y21.onrender.com/registration/part-c?applicationNumber=${applicationNumber}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = res.data;
+      console.log("Fetched Part C Data:", data);
+      if (data) {
+        setCentralExciseRegNo(data.centralExciseRegNo || "");
+        setTradeLicenseNo(data.tradeLicenseNo || "");
+        setTradeLicenseIssueDate(data.tradeLicenseIssueDate || "");
+        setTradeLicenseRenewalDate(data.tradeLicenseRenewalDate || "");
+        setAccountLanguage(data.accountLanguage || "");
+        setAccountingYearFrom(data.accYearFrom || ""); 
+        setAccountingYearTo(data.accYearTo || "");    
+        setSaleLastQuarter(data.saleLastQuarter || "");
+        setSaleLastYear(data.saleLastYear || "");
+        setShopLicenseNo(data.shopLicenseNo || "");  
+        setShopIssueDate(data.shopLicenseIssueDate || "");
+        setFoodLicenseNo(data.foodLicenseNo || "");   
+        setFoodIssueDate(data.foodLicenseIssueDate || "");
+        setIsCitizen(data.isIndianCitizen ?? true);
+        setApplicantName(data.applicantName || ""); 
+        setRole(data.role || "");                   
+        setDesignation(data.designation || "");
+      }
+
+    } catch (err) {
+      console.error("Error fetching Part C data:", err);
+    }
+  };
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchData();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -105,7 +171,7 @@ const PartCForm = () => {
                 Regd No. under Central Excise and Tariff Act (if any)
               </label>
               <div className="col-sm-7">
-                <input type="text" className="form-control" />
+                <input type="text" className="form-control" onChange={(e) => setCentralExciseRegNo(e.target.value)} value={centralExciseRegNo} />
               </div>
             </div>
 
@@ -114,7 +180,7 @@ const PartCForm = () => {
                 Trade License issued by Municipality / Local Body
               </label>
               <div className="col-sm-7">
-                <input type="text" className="form-control" />
+                <input type="text" className="form-control" onChange={(e) => setTradeLicenseNo(e.target.value)} value={tradeLicenseNo} />
               </div>
             </div>
 
@@ -123,7 +189,7 @@ const PartCForm = () => {
                 Date of issue of Trade License Certificate
               </label>
               <div className="col-sm-7">
-                <input type="date" className="form-control" />
+                <input type="date" className="form-control" onChange={(e) => setTradeLicenseIssueDate(e.target.value)} value={tradeLicenseIssueDate} />
               </div>
             </div>
 
@@ -132,7 +198,7 @@ const PartCForm = () => {
                 Date of last Renewal of Trade License Certificate
               </label>
               <div className="col-sm-7">
-                <input type="date" className="form-control" />
+                <input type="date" className="form-control" onChange={(e) => setTradeLicenseRenewalDate(e.target.value)} value={tradeLicenseRenewalDate} />
               </div>
             </div>
 
@@ -141,16 +207,16 @@ const PartCForm = () => {
                 Language to be used in maintaining accounts
               </label>
               <div className="col-sm-7">
-                <input type="text" className="form-control" />
+                <input type="text" className="form-control" onChange={(e) => setAccountLanguage(e.target.value)} value={accountLanguage} />
               </div>
             </div>
 
             <div className="row mb-3 align-items-center">
               <label className="col-sm-5 col-form-label fw-bold">Accounting Year</label>
               <div className="col-sm-7 d-flex align-items-center">
-                <input type="text" className="form-control me-2" placeholder="From (Month)" />
+                <input type="text" className="form-control me-2" placeholder="From (Month)" onChange={(e) => setAccountingYearFrom(e.target.value)} value={accountingYearFrom} />
                 <span className="fw-bold me-2">To</span>
-                <input type="text" className="form-control" placeholder="To (Month)" />
+                <input type="text" className="form-control" placeholder="To (Month)" onChange={(e) => setAccountingYearTo(e.target.value)} value={accountingYearTo} />
               </div>
             </div>
 
@@ -158,9 +224,9 @@ const PartCForm = () => {
               <label className="col-sm-5 col-form-label fw-bold">Amount of Sale During</label>
               <div className="col-sm-7 d-flex align-items-center">
                 <span className="me-2">Last Quarter<span className="text-danger">*</span></span>
-                <input type="number" className="form-control me-3" style={{ width: "150px" }} required />
+                <input type="number" className="form-control me-3" style={{ width: "150px" }} required onChange={(e) => setSaleLastQuarter(e.target.value)} value={saleLastQuarter} />
                 <span className="me-2">Last Year<span className="text-danger">*</span></span>
-                <input type="number" className="form-control" style={{ width: "150px" }} required />
+                <input type="number" className="form-control" style={{ width: "150px" }} required  onChange={(e) => setSaleLastYear(e.target.value)} value={saleLastYear}/>
               </div>
             </div>
 
@@ -169,9 +235,9 @@ const PartCForm = () => {
                 License Issued Under the Tripura Shops & Establishment Act
               </label>
               <div className="col-sm-7 d-flex align-items-center">
-                <input type="text" className="form-control me-3" placeholder="Licence No." style={{ maxWidth: "150px" }} />
+                <input type="text" className="form-control me-3" placeholder="Licence No." style={{ maxWidth: "150px" }} onChange={(e) => setShopLicenseNo(e.target.value)} value={shopLicenseNo} />
                 <span className="me-2">Date</span>
-                <input type="date" className="form-control" style={{ maxWidth: "200px" }} />
+                <input type="date" className="form-control" style={{ maxWidth: "200px" }} onChange={(e) => setShopIssueDate(e.target.value)} value={shopIssueDate} />
               </div>
             </div>
 
@@ -180,9 +246,9 @@ const PartCForm = () => {
                 Food Staff Licence issued by the Competent Authority
               </label>
               <div className="col-sm-7 d-flex align-items-center">
-                <input type="text" className="form-control me-3" placeholder="Licence No." style={{ maxWidth: "150px" }} />
+                <input type="text" className="form-control me-3" placeholder="Licence No." style={{ maxWidth: "150px" }} onChange={(e) => setFoodLicenseNo(e.target.value)} value={foodLicenseNo} />
                 <span className="me-2">Date</span>
-                <input type="date" className="form-control" style={{ maxWidth: "200px" }} />
+                <input type="date" className="form-control" style={{ maxWidth: "200px" }} onChange={(e) => setFoodIssueDate(e.target.value)} value={foodIssueDate} />
               </div>
             </div>
 
@@ -224,9 +290,9 @@ const PartCForm = () => {
               </h6>
               <p className="mb-3">
                 I,&nbsp;
-                <input type="text" className="form-control d-inline-block" style={{ width: "200px" }} placeholder="Applicant Name" required />
+                <input type="text" className="form-control d-inline-block" style={{ width: "200px" }} placeholder="Applicant Name" required onChange={(e) => setApplicantName(e.target.value)} value={applicantName} />
                 &nbsp;
-                <select className="form-select d-inline-block" style={{ width: "180px" }} required>
+                <select className="form-select d-inline-block" style={{ width: "180px" }} required onChange={(e) => setRole(e.target.value)} value={role}>
                   <option value="">Select Role</option>
                   <option>Chairman</option>
                   <option>Owner</option>
@@ -240,7 +306,7 @@ const PartCForm = () => {
                   Designation<span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-9">
-                  <input type="text" className="form-control" placeholder="Enter your designation" required />
+                  <input type="text" className="form-control" placeholder="Enter your designation" required onChange={(e) => setDesignation(e.target.value)} value={designation} />
                 </div>
               </div>
             </div>

@@ -112,11 +112,11 @@ const BankInfo = () => {
       console.log(data);
       if (data.bankName && data.accountNumber) {
         const entry = {
-          bankName: data.bankName,
-          branchName: data.branchAddress,
-          accountNumber: data.accountNumber,
-          accountType: data.accountType,
-          branchCode: data.branchCode,
+          bankName: data.bankName ?? "",
+          branchName: data.branchAddress ?? "",
+          accountNumber: data.accountNumber ?? "",
+          accountType: data.accountType ?? "",
+          branchCode: data.branchCode ?? "",
         };
         setBankAccounts([entry]);
       }

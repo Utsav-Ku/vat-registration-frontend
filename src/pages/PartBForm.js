@@ -140,85 +140,115 @@ const PartBForm = () => {
   };
 
   const fetchData = async () => {
-    const token = localStorage.getItem("token");
-    const applicationNumber = localStorage.getItem("applicationNumber");
+  const token = localStorage.getItem("token");
+  const applicationNumber = localStorage.getItem("applicationNumber");
 
-    if (!token || !applicationNumber) {
-      console.warn("Token or application number missing");
-      return;
-    }
+  if (!token) {
+    alert("You are not logged in. Please log in to continue.");
+    navigate("/login");
+    return;
+  }
 
-    try {
-      const { data } = await axios.get(
-        `https://tax-nic-1y21.onrender.com/registration/part-b?applicationNumber=${applicationNumber}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  if (!applicationNumber) {
+    alert("Please complete Part A first to get the application number.");
+    navigate("/part-a");
+    return;
+  }
 
-      if (data) {
-        // Residential Address
-        if (data.residentialAddress) {
-          setResStreet(data.residentialAddress.street || "");
-          setResCity(data.residentialAddress.city || "");
-          setResDistrict(data.residentialAddress.district || "");
-          setResState(data.residentialAddress.state || "");
-          setResCountry(data.residentialAddress.country || "INDIA");
-          setResPincode(data.residentialAddress.pinCode || "");
-        }
-
-        // Permanent Address
-        if (data.permanentAddress) {
-          setPermStreet(data.permanentAddress.street || "");
-          setPermCity(data.permanentAddress.city || "");
-          setPermDistrict(data.permanentAddress.district || "");
-          setPermState(data.permanentAddress.state || "");
-          setPermCountry(data.permanentAddress.country || "INDIA");
-          setPermPincode(data.permanentAddress.pinCode || "");
-        }
-
-        // Statutory Authority
-        if (data.statutoryAuthority)
-          setAuthority(data.statutoryAuthority);
-
-        // Economic Activity
-        if (data.economicActivity?.roles?.length > 0)
-          setEconActivity(data.economicActivity.roles[0]);
-
-        // Commodity
-        if (data.commodity?.name && data.commodity?.description) {
-          setCommodityTable([
-            {
-              act: "VAT",
-              code: data.commodity.name === "Battery water, De-mineralised water" ? "218601" : "608600",
-              name: data.commodity.name,
-              desc: data.commodity.description
-            }
-          ]);
-        }
-
-        // Sale date
-        if (data.firstTaxableSaleDate)
-          setSaleDate(data.firstTaxableSaleDate);
-
-        // VAT Option
-        if (data.vatOption)
-          setVatType(data.vatOption);
-
-        // Estimated Turnover
-        if (data.estimatedTurnover)
-          setTurnover(String(data.estimatedTurnover));
-
-        // Filing Frequency
-        if (data.filingFrequency)
-          setReturnFreq(data.filingFrequency);
+  try {
+    const { data } = await axios.get(
+      `https://tax-nic-1y21.onrender.com/registration/part-b?applicationNumber=${applicationNumber}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
+
+
+    const dealer = data?.dealer;
+      if (!dealer) return;
+
+      //Commodity
+      setCommodityDesc(dealer.commodityDescription);
+      setCommodity(dealer.commodityName || "");
+
+      // Statutory Authority
+      setAuthority(dealer.regCentralExcise || "REGISTER OF COMPANIES");
+
+      // Economic Activity
+      setEconActivity(dealer.activityCode || "");
+
+      const mapDistrictCodeToName = (code) => {
+        const map = {
+          1: "Dhalai",
+          2: "Gomati",
+          3: "Khowai",
+          4: "North Tripura",
+          5: "Sepahijala",
+          6: "South Tripura",
+          7: "Unakoti",
+          8: "West Tripura",
+        };
+        return map[code] || "";
+      };
+
+      const branchAddresses = data?.branchAddresses;
+
+      if (Array.isArray(branchAddresses)) {
+        // Residential Address from first object
+        const res = branchAddresses[0] || {};
+        setResStreet(res.addr1 || "");
+        setResCity(res.place || "");
+        setResDistrict(res.distCd || "");
+        setResState(res.stCode || "");
+        setResPincode(res.pin?.toString() || "");
+        setResDistrict(mapDistrictCodeToName(res.distCd));
+
+        // Permanent Address from second object
+        const perm = branchAddresses[1] || {};
+        setPermStreet(perm.addr1 || "");
+        setPermCity(perm.place || "");
+        setPermDistrict(perm.distCd || "");
+        setPermState(perm.stCode || "");
+        setPermPincode(perm.pin?.toString() || "");
+        setPermDistrict(mapDistrictCodeToName(perm.distCd));
+      }
+
+      
+
+      // Commodity
+      if (dealer.commodityName && dealer.commodityDescription) {
+        setCommodityTable([
+          {
+            act: "VAT",
+            code:
+              dealer.commodityName ===
+              "Battery water, De-mineralised water"
+                ? "218601"
+                : "608600",
+            name: dealer.commodityName,
+            desc: dealer.commodityDescription,
+          },
+        ]);
+      }
+
+      // Sale date
+      setSaleDate(dealer.firstTaxableSaleDate || "");
+
+      // VAT Option
+      setVatType(dealer.vatOption || "Normal VAT");
+
+      // Estimated Turnover
+      setTurnover(String(dealer.estimatedTurnover || ""));
+
+      // Filing Frequency
+      setReturnFreq(dealer.filingFrequency || "Monthly");
     } catch (error) {
       console.error("Error fetching Part B data:", error.message);
     }
   };
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
