@@ -62,9 +62,9 @@ const PartCForm = () => {
         setFoodLicenseNo(data.foodLicenseNo || "");   
         setFoodIssueDate(data.foodLicenseIssueDate || "");
         setIsCitizen(data.isIndianCitizen ?? true);
-        setApplicantName(data.applicantName || ""); 
-        setRole(data.role || "");                   
-        setDesignation(data.designation || "");
+        setApplicantName(data.declaration.applicantName || ""); 
+        setRole(data.declaration.role || "");                   
+        setDesignation(data.declaration.designation || "");
       }
 
     } catch (err) {
