@@ -155,27 +155,30 @@ const PartAForm = () => {
 
       // Populate the form state with fetched data
       setForm({
-      registrationType: data.regType || "",
-      office: data.office || "",
-      businessStatus: data.busStatus || "",
-      applicantName: data.applNameS || "",
-      fatherName: data.fathName || "",
-      dob: data.dtBirth || "",
-      gender: data.sex === "M" ? "Male" : data.sex === "F" ? "Female" : "",
-      tradingName: data.tradName || "",
-      pan: data.pan || "",
-      roomNo: data.busAddr1 || "",
-      area: data.busAddr2 || "",
-      city: data.busPlac || "",
-      district: data.busDistCd || "",
-      pin: data.busPinCd || "",
-      occupancy: data.occupancy || "", // if available
-      telephone: data.telephone || "",
-      mobile: data.mobile?.toString() || "",
-      fax: data.fax || "",
-      email: data.email || "",
-    });
+        registrationType: data.typeOfRegistration || "",
+        office: data.office || "",
+        businessStatus: "", // Not present in response, handle if needed
+        applicantName: data.applicantName || "",
+        fatherName: data.fathersName || "",
+        dob: data.dateOfBirth || "",
+        gender: data.gender === "M" ? "Male" : data.gender === "F" ? "Female" : "",
+        tradingName: data.tradingName || "",
+        pan: data.pan || "",
 
+        // Address
+        roomNo: data.address?.roomNo || "",
+        area: data.address?.area || "",
+        city: data.address?.village || "",  // Adjust if needed
+        district: data.address?.district || "",
+        pin: data.address?.pinCode ? String(parseInt(data.address.pinCode)) : "",
+        occupancy: data.address?.occupancyStatus || "",
+
+        // Contact
+        telephone: data.contact?.telephone || "",
+        mobile: data.contact?.mobile ? String(parseInt(data.contact.mobile)) : "",
+        fax: data.contact?.fax || "",
+        email: data.contact?.email || "",
+      });
 
     } catch (err) {
       console.error("Error fetching Part A data:", err);

@@ -141,45 +141,73 @@ const PartBForm = () => {
   };
 
   const fetchData = async () => {
-  const token = localStorage.getItem("token");
-  const applicationNumber = localStorage.getItem("applicationNumber");
+    const token = localStorage.getItem("token");
+    const applicationNumber = localStorage.getItem("applicationNumber");
 
-  if (!token) {
-    alert("You are not logged in. Please log in to continue.");
-    navigate("/login");
-    return;
-  }
+    // Redirect if token is missing
+    if (!token) {
+      alert("You are not logged in. Please log in to continue.");
+      navigate("/login");
+      return;
+    }
 
-  if (!applicationNumber) {
-    alert("Please complete Part A first to get the application number.");
-    navigate("/part-a");
-    return;
-  }
+    // Redirect if application number is missing
+    if (!applicationNumber) {
+      alert("Please complete Part A first to get the application number.");
+      navigate("/part-a");
+      return;
+    }
 
-  try {
-    const { data } = await axios.get(
-      `https://tax-nic-1y21.onrender.com/registration/part-b?applicationNumber=${applicationNumber}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const { data } = await axios.get(
+        `https://tax-nic-1y21.onrender.com/registration/part-b?applicationNumber=${applicationNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Fetched Part B Data:", data);
+
+      // ====== Commodity ======
+      const commodity = data?.commodity || {};
+      setCommodityDesc(commodity.description || "");
+      setCommodity(commodity.name || "");
+
+      // Fill Commodity Table
+      if (commodity.name && commodity.description) {
+        setCommodityTable([
+          {
+            act: "VAT",
+            code:
+              commodity.name === "Battery water, De-mineralised water"
+                ? "218601"
+                : "608600",
+            name: commodity.name,
+            desc: commodity.description,
+          },
+        ]);
       }
-    );
 
+      // ====== Economic Activity ======
+      const economicActivity = data?.economicActivity || {};
+      const mapCodeToActivityLabel = {
+        "001": "Trader",
+        "002": "Manufacturer",
+        "003": "Seller",
+        "004": "Reseller",
+        "005": "Importer",
+      };
+      setEconActivity(mapCodeToActivityLabel[economicActivity.activityCode] || "");
+      setSaleDate(data.firstTaxableSaleDate || "");
+      setTurnover(String(data.estimatedTurnover || ""));
+      setReturnFreq(economicActivity.filingFrequency || "Monthly");
 
-    const dealer = data?.dealer;
-      if (!dealer) return;
+      // VAT Option
+      setVatType(data.vatOption || "Normal VAT");
 
-      //Commodity
-      setCommodityDesc(dealer.commodityDescription);
-      setCommodity(dealer.commodityName || "");
-
-      // Statutory Authority
-      setAuthority(dealer.regCentralExcise || "REGISTER OF COMPANIES");
-
-      // Economic Activity
-      setEconActivity(dealer.activityCode || "");
-
+      // ====== District Code Mapping ======
       const mapDistrictCodeToName = (code) => {
         const map = {
           1: "Dhalai",
@@ -194,59 +222,32 @@ const PartBForm = () => {
         return map[code] || "";
       };
 
+      // ====== Residential Address ======
+      const res = data?.branchAddresses[0] || {};
+      setResStreet(res.addr2 || "");
+      setResCity(res.place || "");
+      setResDistrict(res.distCd ? mapDistrictCodeToName(res.distCd) : "");
+      setResState(res.stCode || "");
+      setResPincode(res.pin ? String(parseInt(res.pin)) : "");
+
+      // ====== Permanent Address ======
+      const perm = data?.branchAddresses[1] || {};
+      setPermStreet(perm.addr1 || "");
+      setPermCity(perm.addr2 || "");
+      setPermDistrict(perm.distCd ? mapDistrictCodeToName(perm.distCd) : "");
+      setPermState(perm.stCode || "");
+      setPermPincode(perm.pin ? String(parseInt(perm.pin)) : "");
+
+      // ====== Branch Addresses (Optional) ======
       const branchAddresses = data?.branchAddresses;
-
       if (Array.isArray(branchAddresses)) {
-        // Residential Address from first object
-        const res = branchAddresses[0] || {};
-        setResStreet(res.addr1 || "");
-        setResCity(res.place || "");
-        setResDistrict(res.distCd || "");
-        setResState(res.stCode || "");
-        setResPincode(res.pin?.toString() || "");
-        setResDistrict(mapDistrictCodeToName(res.distCd));
-
-        // Permanent Address from second object
-        const perm = branchAddresses[1] || {};
-        setPermStreet(perm.addr1 || "");
-        setPermCity(perm.place || "");
-        setPermDistrict(perm.distCd || "");
-        setPermState(perm.stCode || "");
-        setPermPincode(perm.pin?.toString() || "");
-        setPermDistrict(mapDistrictCodeToName(perm.distCd));
+        console.log("Branch Addresses:", branchAddresses);
+        // You can use this to populate a table or display branch addresses
       }
 
-      
-
-      // Commodity
-      if (dealer.commodityName && dealer.commodityDescription) {
-        setCommodityTable([
-          {
-            act: "VAT",
-            code:
-              dealer.commodityName ===
-              "Battery water, De-mineralised water"
-                ? "218601"
-                : "608600",
-            name: dealer.commodityName,
-            desc: dealer.commodityDescription,
-          },
-        ]);
-      }
-
-      // Sale date
-      setSaleDate(dealer.firstTaxableSaleDate || "");
-
-      // VAT Option
-      setVatType(dealer.vatOption || "Normal VAT");
-
-      // Estimated Turnover
-      setTurnover(String(dealer.estimatedTurnover || ""));
-
-      // Filing Frequency
-      setReturnFreq(dealer.filingFrequency || "Monthly");
     } catch (error) {
       console.error("Error fetching Part B data:", error.message);
+      alert("Failed to load Part B data. Please try again.");
     }
   };
 
