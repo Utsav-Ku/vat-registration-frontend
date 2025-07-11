@@ -119,6 +119,7 @@ const PartBForm = () => {
   };
 
   const handleAddCommodity = () => {
+
     if (!commodity || !commodityDesc) {
       alert("Please select a commodity and enter its description.");
       return;
@@ -618,6 +619,13 @@ const PartBForm = () => {
               [+] Add
             </button>
           </div>
+
+          {successMessage === 'Commodity Inserted !' && (
+            <div className="alert alert-success text-center fw-bold mb-3" role="alert">
+              <i className="bi bi-check-circle-fill me-2"></i>
+              Details Inserted Successfully !!
+            </div>
+          )}
 
           {commodityTable.length > 0 && (
             <table className="table table-bordered text-center">
