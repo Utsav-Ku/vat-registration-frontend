@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import LoadingButton from "../components/LoadingButton";
 
 export default function AdditionalBusinessPlaces() {
   const [formData, setFormData] = useState({
@@ -396,26 +397,18 @@ export default function AdditionalBusinessPlaces() {
 
           <div className="d-flex justify-content-center mt-4" style={{ gap: '30px' }}>
             <button className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/bank-info')}>Previous</button>
-            <button
+            <LoadingButton
               type="button"
+              loading={loading}
               onClick={handleSubmit}
-              className="btn px-4 d-flex align-items-center justify-content-center"
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
                 width: "250px",
               }}
-              disabled={loading}
             >
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Processing...
-                </>
-              ) : (
-                "Save & Continue"
-              )}
-            </button>
+              Save & Continue
+            </LoadingButton>
           </div>
         </div>
       </div>

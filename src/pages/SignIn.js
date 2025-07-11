@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingButton from '../components/LoadingButton';
 
 const SignIn = () => {
 
@@ -188,27 +189,18 @@ const SignIn = () => {
                         {/* Sign In Button */}
                         <div className="position-relative mb-3">
                             <div className="d-flex justify-content-center">
-                                <button
-                                type="submit"
-                                className="btn px-4 d-flex align-items-center justify-content-center"
-                                style={{
-                                    backgroundColor: "#1E59A8",
-                                    color: "white",
-                                    width: "250px",
-                                }}
-                                disabled={loading}
+                                <LoadingButton
+                                    type="submit"
+                                    loading={loading}
+                                    style={{
+                                        backgroundColor: "#1E59A8",
+                                        color: "white",
+                                        width: "250px",
+                                    }}
                                 >
-                                {loading ? (
-                                    <>
-                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                    Processing...
-                                    </>
-                                ) : (
-                                    "Login"
-                                )}
-                                </button>
+                                    Sign In
+                                </LoadingButton>
                             </div>
-
                             <a
                                 onClick={() => navigate('/forgot-password')}
                                 href="#"

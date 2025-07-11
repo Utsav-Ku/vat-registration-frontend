@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { bankOptions } from '../constants/dropDowns';
+import LoadingButton from '../components/LoadingButton';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -340,30 +341,18 @@ const BankInfo = () => {
               <button type="button" className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/part-c')}>
                 Previous
               </button>
-              <button
+              <LoadingButton
                 type="button"
+                loading={loading}
                 onClick={handleSubmit}
-                className="btn px-4 d-flex align-items-center justify-content-center"
                 style={{
                   backgroundColor: "#1E59A8",
                   color: "white",
                   width: "250px",
                 }}
-                disabled={loading}
               >
-                {loading ? (
-                  <>
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    Processing...
-                  </>
-                ) : (
-                  "Save & Continue"
-                )}
-              </button>
+                Save & Continue
+              </LoadingButton>
             </div>
           </div>
 

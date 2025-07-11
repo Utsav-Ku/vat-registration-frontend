@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
+import LoadingButton from "../components/LoadingButton";
 
 const PartCForm = () => {
   const navigate = useNavigate();
@@ -326,30 +327,17 @@ const PartCForm = () => {
                 Previous
               </button>
 
-              <button
+              <LoadingButton
                 type="submit"
-                className="btn px-4 d-flex align-items-center justify-content-center"
+                loading={loading}
                 style={{
                   backgroundColor: "#1E59A8",
                   color: "white",
-                  width: "100%",
-                  maxWidth: "250px",
+                  width: "250px",
                 }}
-                disabled={loading}
               >
-                {loading ? (
-                  <>
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    Processing...
-                  </>
-                ) : (
-                  "Save & Continue"
-                )}
-              </button>
+                Save & Continue
+              </LoadingButton>
             </div>
 
           </form>

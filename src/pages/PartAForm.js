@@ -10,6 +10,7 @@ import {
   districtsByState,
   occupancies
 } from "../contants/dropdowns";
+import LoadingButton from "../components/LoadingButton";
 
 const PartAForm = () => {
   const [form, setForm] = useState({
@@ -569,25 +570,17 @@ const PartAForm = () => {
 
           {/* Save & Continue */}
           <div className="d-flex justify-content-center mt-4">
-            <button
+            <LoadingButton
               type="submit"
-              className="btn px-4 d-flex align-items-center justify-content-center"
+              loading={loading}
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
                 width: "250px",
               }}
-              disabled={loading}
             >
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Processing...
-                </>
-              ) : (
-                "Save & Continue"
-              )}
-            </button>
+              Save & Continue
+            </LoadingButton>
           </div>
         </form>
       </div>

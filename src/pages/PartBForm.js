@@ -8,6 +8,7 @@ import {
 } from "../contants/dropdowns.js";
 import Header from "../components/Header.js";
 import axios from "axios";
+import LoadingButton from "../components/LoadingButton.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -750,30 +751,17 @@ const PartBForm = () => {
               Previous
             </button>
 
-            <button
+            <LoadingButton
               type="submit"
-              className="btn px-4 d-flex align-items-center justify-content-center"
+              loading={loading}
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
-                width: "100%",
-                maxWidth: "250px",
+                width: "250px",
               }}
-              disabled={loading}
             >
-              {loading ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Processing...
-                </>
-              ) : (
-                "Save & Continue"
-              )}
-            </button>
+              Save & Continue
+            </LoadingButton>
           </div>
 
         </form>

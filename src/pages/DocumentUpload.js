@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingButton from '../components/LoadingButton';
 
 const DocumentUpload = () => {
     const navigate = useNavigate();
@@ -290,23 +291,20 @@ const DocumentUpload = () => {
                             style={{ backgroundColor: '#1E59A8', color: 'white', width: '200px' }}
                             onClick={() => navigate('/business-partner-details')}
                         >
-                            Prev
+                            Prev handleSaveAndContinue
                         </button>
-                        <button
-                            className="btn fw-bold px-4"
-                            style={{ backgroundColor: '#1E59A8', color: 'white', width: '200px' }}
+                        <LoadingButton
+                            type="button"
+                            loading={saving}
                             onClick={handleSaveAndContinue}
-                            disabled={saving}
+                            style={{
+                                backgroundColor: "#1E59A8",
+                                color: "white",
+                                width: "250px",
+                            }}
                         >
-                            {saving ? (
-                                <>
-                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                    Saving...
-                                </>
-                            ) : (
-                                "Save & Continue"
-                            )}
-                        </button>
+                            Save & Continue
+                        </LoadingButton>
                     </div>
 
                 </div>

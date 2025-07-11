@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingButton from '../components/LoadingButton';
 
 const BusinessPartnerDetails = () => {
   const navigate = useNavigate();
@@ -695,25 +696,18 @@ const BusinessPartnerDetails = () => {
               width: "250px"
             }} onClick={() => navigate('/additional-business-places')}>Previous</button>
 
-            <button
-              type="submit"
-              className="btn px-4 d-flex align-items-center justify-content-center"
+            <LoadingButton
+              type="button"
+              loading={loading}
+              onClick={handleSubmit}
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
                 width: "250px",
               }}
-              disabled={loading}
             >
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Processing...
-                </>
-              ) : (
-                "Save & Continue"
-              )}
-            </button>
+              Save & Continue
+            </LoadingButton>
           </div>
         </form>
       </div>
