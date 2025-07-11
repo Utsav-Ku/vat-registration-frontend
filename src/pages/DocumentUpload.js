@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingButton from '../components/LoadingButton';
+import CustomTable from '../components/CustomTable';
 
 const DocumentUpload = () => {
     const navigate = useNavigate();
@@ -13,6 +14,24 @@ const DocumentUpload = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [saving, setSaving] = useState(false);
     const maxFileSize = 500 * 1024;
+
+    const docsTableColumns = [
+    { key: 'name', label: 'Document Name' },
+    { key: 'type', label: 'Document Type' },
+    { key: 'size', label: 'Size' },
+    ];
+
+    const docsTableActions = [
+    {
+        label: 'Delete',
+        variant: 'btn-danger',
+        onClick: (_, index) => {
+        const updated = uploadedDocs.filter((_, i) => i !== index);
+        setUploadedDocs(updated);
+        },
+    },
+    ];
+
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -250,38 +269,12 @@ const DocumentUpload = () => {
                         <h6 className="text-primary fw-bold mt-4 mb-2">List of Document</h6>
                         <hr />
 
-                        {uploadedDocs.length === 0 ? (
-                            <div className="p-3 text-center text-muted" style={{ backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-                                <i className="bi bi-folder-x me-2"></i>
-                                No documents uploaded yet.
-                            </div>
-                        ) : (
-                            <table className="table table-bordered mt-3">
-                                <thead className="table-primary text-center" >
-                                    <tr>
-                                        <th>Delete</th>
-                                        <th>Document Name</th>
-                                        <th>Document Type</th>
-                                        <th>Size</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="text-center">
-                                    {uploadedDocs.map((doc, index) => (
-                                        <tr key={index}>
-                                            <td>
-                                                <button className="btn btn-sm btn-danger" onClick={() => {
-                                                    const updated = uploadedDocs.filter((_, i) => i !== index);
-                                                    setUploadedDocs(updated);
-                                                }}>Delete</button>
-                                            </td>
-                                            <td>{doc.name}</td>
-                                            <td>{doc.type}</td>
-                                            <td>{doc.size}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
+                        <CustomTable
+                            data={uploadedDocs}
+                            columns={docsTableColumns}
+                            actions={docsTableActions}
+                        />
+
                     </div>
 
                     {/* Bottom Buttons Centered */}
@@ -291,7 +284,7 @@ const DocumentUpload = () => {
                             style={{ backgroundColor: '#1E59A8', color: 'white', width: '200px' }}
                             onClick={() => navigate('/business-partner-details')}
                         >
-                            Prev handleSaveAndContinue
+                            Prev
                         </button>
                         <LoadingButton
                             type="button"

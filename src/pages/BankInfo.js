@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { bankOptions } from '../constants/dropDowns';
 import LoadingButton from '../components/LoadingButton';
+import CustomTable from '../components/CustomTable';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -24,6 +25,22 @@ const BankInfo = () => {
     setAccountType("");
     setSelectedIndex(null);
   };
+
+  const tableColumns = [
+    { key: "bankName", label: "Bank" },
+    { key: "branchName", label: "Branch" },
+    { key: "accountNumber", label: "Account Number" },
+    { key: "accountType", label: "Type Of Account" },
+    { key: "branchCode", label: "Branch Code" },
+  ];
+
+  const tableActions = [
+    {
+      label: "Select",
+      variant: "btn-outline-primary",
+      onClick: (_, index) => handleSelect(index),
+    }
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -299,41 +316,11 @@ const BankInfo = () => {
           <h6 className="fw-bold mb-1 mt-2" style={{ color: 'rgb(34, 130, 193)' }}>List of Bank Accounts</h6>
           <hr className="my-1" />
 
-          {bankAccounts.length === 0 ? (
-            <div className="p-3 text-center text-muted fade-in mt-4" style={{ backgroundColor: 'rgb(248, 249, 250)', borderRadius: '6px' }}>
-              <i className="bi bi-folder-x me-2"></i>
-              No Bank Accounts Added Yet.
-            </div>
-          ) : (
-            <table className="table table-bordered mt-4 fade-in">
-              <thead className="table-primary text-center">
-                <tr>
-                  <th>Select</th>
-                  <th>Bank</th>
-                  <th>Branch</th>
-                  <th>Account Number</th>
-                  <th>Type Of Account</th>
-                  <th>Branch Code</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bankAccounts.map((acc, i) => (
-                  <tr key={i} className="text-center align-middle">
-                    <td>
-                      <button className="btn btn-outline-primary btn-sm" onClick={() => handleSelect(i)} style={{ width: "80px" }}>
-                        Select
-                      </button>
-                    </td>
-                    <td>{acc.bankName}</td>
-                    <td>{acc.branchName}</td>
-                    <td>{acc.accountNumber}</td>
-                    <td>{acc.accountType}</td>
-                    <td>{acc.branchCode}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <CustomTable
+            data={bankAccounts}
+            columns={tableColumns}
+            actions={tableActions}
+          />
 
           {/* Navigation Buttons */}
           <div className="d-flex justify-content-center mt-4">

@@ -9,6 +9,7 @@ import {
 import Header from "../components/Header.js";
 import axios from "axios";
 import LoadingButton from "../components/LoadingButton.js";
+import CustomTable from "../components/CustomTable.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -39,6 +40,25 @@ const PartBForm = () => {
   const [commodityTable, setCommodityTable] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const commodityTableColumns = [
+    { key: "act", label: "Act" },
+    { key: "code", label: "Code" },
+    { key: "name", label: "Commodity" },
+    { key: "desc", label: "Dealer's Description" },
+  ];
+
+  const commodityTableActions = [
+    {
+      label: "Delete",
+      variant: "btn-danger",
+      onClick: (_, index) => {
+        const updated = commodityTable.filter((_, i) => i !== index);
+        setCommodityTable(updated);
+      },
+    },
+  ];
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -630,40 +650,16 @@ const PartBForm = () => {
           )}
 
           {commodityTable.length > 0 && (
-            <table className="table table-bordered text-center">
-              <thead className="table-primary">
-                <tr>
-                  <th>Action</th>
-                  <th>Act</th>
-                  <th>Code</th>
-                  <th>Commodity</th>
-                  <th>Dealer's description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {commodityTable.map((item, idx) => (
-                  <tr key={idx}>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-danger"
-                        onClick={() =>
-                          setCommodityTable((prev) =>
-                            prev.filter((_, i) => i !== idx)
-                          )
-                        }
-                      >
-                        Delete
-                      </button>
-                    </td>
-                    <td>{item.act}</td>
-                    <td>{item.code}</td>
-                    <td>{item.name}</td>
-                    <td>{item.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="mt-4">
+              <h6 className="text-primary fw-bold">
+                List of Commodities Added
+              </h6>
+              <CustomTable
+                data={commodityTable}
+                columns={commodityTableColumns}
+                actions={commodityTableActions}
+              />
+            </div>
           )}
 
           <div className="mb-3 row">

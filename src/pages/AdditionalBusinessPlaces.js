@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingButton from "../components/LoadingButton";
+import CustomTable from "../components/CustomTable";
 
 export default function AdditionalBusinessPlaces() {
   const [formData, setFormData] = useState({
@@ -33,6 +34,23 @@ export default function AdditionalBusinessPlaces() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const tableColumns = [
+    { key: "name", label: "Branch" },
+    { key: "city", label: "City" },
+    { key: "pinCode", label: "PIN" },
+    { key: "branchType", label: "Type" },
+    { key: "tel", label: "Phone" },
+  ];
+
+  const tableActions = [
+    {
+      label: "Select",
+      variant: "btn-outline-primary",
+      onClick: (_, index) => handleSelect(index),
+    },
+  ];
+
 
   const resetForm = () => {
     setFormData({
@@ -364,36 +382,11 @@ export default function AdditionalBusinessPlaces() {
           <h6 className="fw-bold mb-1 mt-3" style={{ color: 'rgb(34, 130, 193)' }}>List of Additional Business Places</h6>
           <hr className="my-1" />
 
-          {records.length === 0 ? (
-            <div className="p-3 text-center text-muted fade-in mt-4" style={{ backgroundColor: 'rgb(248, 249, 250)', borderRadius: '6px' }}>
-              No Additional Business Places Added Yet.
-            </div>
-          ) : (
-            <table className="table table-bordered mt-4 fade-in">
-              <thead className="table-primary text-center">
-                <tr>
-                  <th>Select</th>
-                  <th>Branch</th>
-                  <th>City</th>
-                  <th>PIN</th>
-                  <th>Type</th>
-                  <th>Phone</th>
-                </tr>
-              </thead>
-              <tbody>
-                {records.map((rec, i) => (
-                  <tr key={i} className="text-center align-middle">
-                    <td><button className="btn btn-outline-primary btn-sm" onClick={() => handleSelect(i)}>Select</button></td>
-                    <td>{rec.name}</td>
-                    <td>{rec.city}</td>
-                    <td>{rec.pinCode}</td>
-                    <td>{rec.branchType}</td>
-                    <td>{rec.tel}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <CustomTable
+            data={records}
+            columns={tableColumns}
+            actions={tableActions}
+          />
 
           <div className="d-flex justify-content-center mt-4" style={{ gap: '30px' }}>
             <button className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/bank-info')}>Previous</button>
