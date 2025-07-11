@@ -106,9 +106,9 @@ const PartAForm = () => {
       const { data } = await axios.post("https://tax-nic-1y21.onrender.com/registration/part-a", payload);
 
       if (data.success) {
-        alert(`Registration Successful!\nApplication No: ${data.applicationNumber}\nPassword: ${data.password}`);
+        alert(`Registration Successful!\nApplication No: ${data.applicationNumber}\nPassword: ${data.password} \n "Please log in to continue with your application."`);
         localStorage.setItem("applicationNumber", data.applicationNumber);
-        navigate("/part-b");
+        navigate("/login");
       } else {
         alert("Unexpected server response.");
       }
