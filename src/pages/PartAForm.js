@@ -183,7 +183,12 @@ const PartAForm = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchData();
+
+    const token = localStorage.getItem("token");
+    if(token){
+      fetchData();
+    }
+    
   }, []);
 
   return (
