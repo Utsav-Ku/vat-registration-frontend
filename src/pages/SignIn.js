@@ -89,7 +89,7 @@ const SignIn = () => {
                 <div className="border p-4 mx-auto shadow"
                     style={{ maxWidth: '700px', backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '6px' }}>
 
-                    <h5 className="fw-bold mb-4 text-center" style={{ color: '#2282C1' }}>
+                    <h5 className="fw-bold mb-4 text-center text-sm-star" style={{ color: '#2282C1' }}>
                         Registered Candidates Sign-In
                     </h5>
 
@@ -97,8 +97,8 @@ const SignIn = () => {
 
                         {/* Application Number */}
                         <div className="mb-3 row align-items-center">
-                            <label className="col-sm-5 col-form-label fw-bold">Application Number</label>
-                            <div className="col-sm-7">
+                            <label className="col-12 col-sm-5 col-form-label fw-bold mt-2 mt-sm-0">Application Number</label>
+                            <div className="col-12 col-sm-7">
                                 <input
                                     onChange={(e) => setApplicationNo(e.target.value)}
                                     value={applicationNo}
@@ -112,8 +112,8 @@ const SignIn = () => {
 
                         {/* Password */}
                         <div className="mb-3 row align-items-center">
-                            <label className="col-sm-5 col-form-label fw-bold">Password</label>
-                            <div className="col-sm-7">
+                            <label className="col-12 col-sm-5 col-form-label fw-bold mt-2 mt-sm-0">Password</label>
+                            <div className="col-12 col-sm-7">
                                 <input
                                     onChange={(e) => setPassword(e.target.value)}
                                     value={password}
@@ -127,8 +127,8 @@ const SignIn = () => {
 
                         {/* Security Pin */}
                         <div className="mb-3 row align-items-center">
-                            <label className="col-sm-5 col-form-label fw-bold">Security Pin (case sensitive)</label>
-                            <div className="col-sm-7">
+                            <label className="col-12 col-sm-5 col-form-label fw-bold mt-2 mt-sm-0">Security Pin (case sensitive)</label>
+                            <div className="col-12 col-sm-7">
                                 <input
                                     onChange={(e) => setSecurityPin(e.target.value)}
                                     value={securityPin}
@@ -142,7 +142,7 @@ const SignIn = () => {
 
                         {/* Captcha */}
                         <div className="mb-3 row align-items-center">
-                            <label className="col-sm-5 col-form-label fw-bold">Security Pin</label>
+                            <label className="col-12 col-sm-5 col-form-label fw-bold mt-2 mt-sm-0">Security Pin</label>
                             <div className="col-sm-7 d-flex align-items-center">
                                 <input
                                     type="text"
@@ -162,8 +162,8 @@ const SignIn = () => {
 
                         {/* Audio */}
                         <div className="mb-4 row align-items-center">
-                            <label className="col-sm-5 col-form-label fw-bold">Listen Security Pin Audio</label>
-                            <div className="col-sm-7">
+                            <label className="col-12 col-sm-5 col-form-label fw-bold mt-2 mt-sm-0">Listen Security Pin Audio</label>
+                            <div className="col-12 col-sm-7">
                                 <button
                                     className="btn btn-outline-secondary d-flex align-items-center justify-content-center position-relative"
                                     type="button"
@@ -187,11 +187,12 @@ const SignIn = () => {
                         </div>
 
                         {/* Sign In Button */}
-                        <div className="position-relative mb-3">
+                        {/* <div className="position-relative mb-3">
                             <div className="d-flex justify-content-center">
                                 <LoadingButton
                                     type="submit"
                                     loading={loading}
+                                    className="w-100 w-sm-auto"
                                     style={{
                                         backgroundColor: "#1E59A8",
                                         color: "white",
@@ -208,14 +209,71 @@ const SignIn = () => {
                             >
                                 Forgot Password?
                             </a>
-                        </div>
+                        </div> */
+                        <div className="mb-3">
+                            {/* For small screens: stacked layout */}
+                            <div className="d-block d-sm-none text-center">
+                                <LoadingButton
+                                type="submit"
+                                loading={loading}
+                                className="w-100 mb-2"
+                                style={{
+                                    backgroundColor: "#1E59A8",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "4px" 
+                                }}
+                                >
+                                Sign In
+                                </LoadingButton>
+                                <a
+                                onClick={() => navigate('/forgot-password')}
+                                href="#"
+                                style={{ color: '#000000' }}
+                                >
+                                Forgot Password?
+                                </a>
+                            </div>
+
+                            {/* For larger screens: inline layout with absolute positioning */}
+                            <div className="d-none d-sm-block position-relative">
+                                <div className="d-flex justify-content-center">
+                                <LoadingButton
+                                    type="submit"
+                                    loading={loading}
+                                    style={{
+                                    backgroundColor: "#1E59A8",
+                                    color: "white",
+                                    width: "250px"
+                                    }}
+                                >
+                                    Sign In
+                                </LoadingButton>
+                                </div>
+                                <a
+                                onClick={() => navigate('/forgot-password')}
+                                href="#"
+                                style={{
+                                    color: '#000000',
+                                    whiteSpace: 'nowrap',
+                                    position: 'absolute',
+                                    right: '0',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)'
+                                }}
+                                >
+                                Forgot Password?
+                                </a>
+                            </div>
+                            </div>
+                        }
 
                         {/* New Registration */}
                         <div className="d-flex justify-content-center mb-3">
                             <button
                                 type="button"
                                 onClick={() => navigate('/part-a')}
-                                className="btn fw-bold px-4"
+                                className="btn fw-bold px-4 w-100 w-sm-auto"
                                 style={{ backgroundColor: '#FC6C1B', color: 'white', width: '250px' }}
                             >
                                 New Registration &gt;&gt;
