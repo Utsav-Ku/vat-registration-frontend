@@ -645,7 +645,7 @@ const PartBForm = () => {
                     <td>
                       <button
                         type="button"
-                        className="btn btn-link text-danger"
+                        className="btn btn-sm btn-danger"
                         onClick={() =>
                           setCommodityTable((prev) =>
                             prev.filter((_, i) => i !== idx)

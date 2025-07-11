@@ -259,7 +259,6 @@ const DocumentUpload = () => {
                                 <thead className="table-primary text-center" >
                                     <tr>
                                         <th>Delete</th>
-                                        <th>View</th>
                                         <th>Document Name</th>
                                         <th>Document Type</th>
                                         <th>Size</th>
@@ -274,7 +273,6 @@ const DocumentUpload = () => {
                                                     setUploadedDocs(updated);
                                                 }}>Delete</button>
                                             </td>
-                                            <td><i className="bi bi-eye-fill text-primary"></i></td>
                                             <td>{doc.name}</td>
                                             <td>{doc.type}</td>
                                             <td>{doc.size}</td>
