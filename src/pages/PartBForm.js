@@ -10,6 +10,7 @@ import Header from "../components/Header.js";
 import axios from "axios";
 import LoadingButton from "../components/LoadingButton.js";
 import CustomTable from "../components/CustomTable.js";
+import SuccessMessage from "../components/SuccessMessage.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -166,7 +167,7 @@ const PartBForm = () => {
     // Redirect if token is missing
     if (!token) {
       alert("You are not logged in. Please log in to continue.");
-      navigate("/login");
+      navigate("/sign-in");
       return;
     }
 
@@ -641,10 +642,7 @@ const PartBForm = () => {
           </div>
 
           {successMessage === 'Commodity Inserted !' && (
-            <div className="alert alert-success text-center fw-bold mb-3" role="alert">
-              <i className="bi bi-check-circle-fill me-2"></i>
-              Details Inserted Successfully !!
-            </div>
+            <SuccessMessage message={successMessage} />
           )}
 
           {commodityTable.length > 0 && (

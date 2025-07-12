@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingButton from "../components/LoadingButton";
 import CustomTable from "../components/CustomTable";
+import SuccessMessage from "../components/SuccessMessage";
 
 export default function AdditionalBusinessPlaces() {
   const [formData, setFormData] = useState({
@@ -113,7 +114,7 @@ export default function AdditionalBusinessPlaces() {
 
     if (!token) {
       alert("You are not logged in. Please log in to continue.");
-      navigate("/login");
+      navigate("/sign-in");
       return;
     }
 
@@ -373,10 +374,7 @@ export default function AdditionalBusinessPlaces() {
           {/* Form END */}
 
           {isSubmitted && (
-            <div className="alert alert-success text-center fw-bold" role="alert">
-              <i className="bi bi-check-circle-fill me-2"></i>
-              Business Place Added Successfully !!
-            </div>
+            <SuccessMessage message={"Details Inserted Successfully!!"} />
           )}
 
           <h6 className="fw-bold mb-1 mt-3" style={{ color: 'rgb(34, 130, 193)' }}>List of Additional Business Places</h6>

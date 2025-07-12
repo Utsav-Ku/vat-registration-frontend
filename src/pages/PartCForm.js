@@ -31,7 +31,7 @@ const PartCForm = () => {
 
     if (!token) {
       alert("You are not logged in. Please log in to continue.");
-      navigate("/login");
+      navigate("/sign-in");
       return;
     }
 

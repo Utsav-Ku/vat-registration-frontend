@@ -5,6 +5,7 @@ import axios from 'axios';
 import { bankOptions } from '../constants/dropDowns';
 import LoadingButton from '../components/LoadingButton';
 import CustomTable from '../components/CustomTable';
+import SuccessMessage from '../components/SuccessMessage';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -305,10 +306,7 @@ const BankInfo = () => {
             </div>
 
             {isSubmitted && (
-              <div className="alert alert-success text-center fw-bold" role="alert">
-                <i className="bi bi-check-circle-fill me-2"></i>
-                Details Inserted Successfully !!
-              </div>
+              <SuccessMessage message={"Details Inserted Successfully!!"} />
             )}
           </form>
 
