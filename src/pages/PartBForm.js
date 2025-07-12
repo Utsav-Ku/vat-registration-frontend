@@ -155,8 +155,6 @@ const PartBForm = () => {
       desc: commodityDesc,
     };
     setCommodityTable((prev) => [...prev, newCommodity]);
-    setCommodity("");
-    setCommodityDesc("");
     setSuccessMessage("Commodity Inserted !");
     setTimeout(() => setSuccessMessage(""), 3000);
   };
@@ -244,20 +242,20 @@ const PartBForm = () => {
       };
 
       // ====== Residential Address ======
-      const res = data?.branchAddresses[0] || {};
-      setResStreet(res.addr2 || "");
-      setResCity(res.place || "");
-      setResDistrict(res.distCd ? mapDistrictCodeToName(res.distCd) : "");
-      setResState(res.stCode || "");
-      setResPincode(res.pin ? String(parseInt(res.pin)) : "");
+      const res = data?.residentialAddress || {};
+      setResStreet(res.street || "");
+      setResCity(res.city || "");
+      setResDistrict(res.district ? mapDistrictCodeToName(res.district) : "");
+      setResState(res.state || "");
+      setResPincode(res.pinCode ? String(parseInt(res.pinCode)) : "");
 
       // ====== Permanent Address ======
-      const perm = data?.branchAddresses[1] || {};
-      setPermStreet(perm.addr1 || "");
-      setPermCity(perm.addr2 || "");
-      setPermDistrict(perm.distCd ? mapDistrictCodeToName(perm.distCd) : "");
-      setPermState(perm.stCode || "");
-      setPermPincode(perm.pin ? String(parseInt(perm.pin)) : "");
+      const perm = data?.permanentAddress || {};
+      setPermStreet(perm.street || "");
+      setPermCity(perm.city || "");
+      setPermDistrict(perm.district ? mapDistrictCodeToName(perm.district) : "");
+      setPermState(perm.state || "");
+      setPermPincode(perm.pinCode ? String(parseInt(perm.pinCode)) : "");
 
       // ====== Branch Addresses (Optional) ======
       const branchAddresses = data?.branchAddresses;

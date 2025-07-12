@@ -54,17 +54,17 @@ const PartCForm = () => {
         setTradeLicenseIssueDate(data.tradeLicenseIssueDate || "");
         setTradeLicenseRenewalDate(data.tradeLicenseRenewalDate || "");
         setAccountLanguage(data.accountLanguage || "");
-        setAccountingYearFrom(data.accYearFrom || ""); 
-        setAccountingYearTo(data.accYearTo || "");    
+        setAccountingYearFrom(data.accountingYearFrom|| ""); 
+        setAccountingYearTo(data.accountingYearTo || "");    
         setSaleLastQuarter(data.saleLastQuarter || "");
         setSaleLastYear(data.saleLastYear || "");
-        setShopLicenseNo(data.shopLicenseNo || "");  
-        setShopIssueDate(data.shopLicenseIssueDate || "");
-        setFoodLicenseNo(data.foodLicenseNo || "");   
-        setFoodIssueDate(data.foodLicenseIssueDate || "");
+        setShopLicenseNo(data.shopLicense.licenseNo || "");  
+        setShopIssueDate(data.shopLicense.issueDate || "");
+        setFoodLicenseNo(data.foodLicense.licenseNo || "");   
+        setFoodIssueDate(data.foodLicense.issueDate || "");
         setIsCitizen(data.isIndianCitizen ?? true);
         setApplicantName(data.declaration.applicantName || ""); 
-        setRole(data.declaration.role || "");                   
+        setRole(data.declaration.designation || "");                   
         setDesignation(data.declaration.designation || "");
       }
 

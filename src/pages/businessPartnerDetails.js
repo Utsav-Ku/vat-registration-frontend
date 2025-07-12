@@ -195,6 +195,8 @@ const BusinessPartnerDetails = () => {
       return;
     }
 
+    console.log(token);
+
     if (!applicationNumber) {
       alert("Application number not found. Please complete Part A first.");
       navigate("/part-a");
@@ -211,7 +213,8 @@ const BusinessPartnerDetails = () => {
         }
       );
 
-      const data = response.data?.[0]; // Assuming only one partner detail returned
+      const data = response.data;
+      console.log(data);
       if (data) {
         setPartnerType(data.partnerType || '');
         setPersonName(data.name || '');

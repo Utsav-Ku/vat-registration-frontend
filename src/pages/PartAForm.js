@@ -99,8 +99,23 @@ const PartAForm = () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        alert("Details Updated Successfully");
-        navigate("/part-b");
+        const applicationNumber = localStorage.getItem("applicationNumber");
+        const { data } = await axios.put("https://tax-nic-1y21.onrender.com/registration/part-a", {...payload, applicationNumber} ,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        )
+
+        if(data.success) {
+          alert("Part A saved successfully!");
+          navigate("/part-b");
+        } else {
+          alert("Failed to save Part A. Please try again.");
+        } 
+        setLoading(false);
         return;
       }
 
@@ -158,7 +173,7 @@ const PartAForm = () => {
       setForm({
         registrationType: data.typeOfRegistration || "",
         office: data.office || "",
-        businessStatus: "", // Not present in response, handle if needed
+        businessStatus: data.businessConstitution || "", // Not present in response, handle if needed
         applicantName: data.applicantName || "",
         fatherName: data.fathersName || "",
         dob: data.dateOfBirth || "",
