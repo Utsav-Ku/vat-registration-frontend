@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header.js';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer.js';
 
 const Home = () => {
 
@@ -81,7 +82,8 @@ const Home = () => {
 
                 </div>
             </div>
-        
+
+            <Footer />
         </div>
     );
 };

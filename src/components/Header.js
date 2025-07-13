@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <div className="d-flex align-items-center w-100 p-3 border-bottom bg-white">
+    <div className="d-flex align-items-center w-100 p-3 border-bottom" >
       
       <img 
         src="/OIP.png" 
