@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const Finish = () => {
 
@@ -102,6 +103,7 @@ const Finish = () => {
 
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

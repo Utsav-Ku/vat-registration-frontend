@@ -5,6 +5,7 @@ import axios from 'axios';
 import LoadingButton from '../components/LoadingButton';
 import CustomTable from '../components/CustomTable';
 import SuccessMessage from '../components/SuccessMessage';
+import Footer from '../components/Footer';
 
 const DocumentUpload = () => {
     const navigate = useNavigate();
@@ -300,6 +301,7 @@ const DocumentUpload = () => {
 
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

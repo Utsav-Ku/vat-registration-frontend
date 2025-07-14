@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
 import LoadingButton from "../components/LoadingButton";
+import Footer from "../components/Footer";
 
 const PartCForm = () => {
   const navigate = useNavigate();
@@ -157,7 +158,7 @@ const PartCForm = () => {
   };
 
   return (
-    <>
+    <div>
       <Header />
       <div className="container mt-4 mb-5">
         <div className="card shadow-lg p-4">
@@ -343,7 +344,8 @@ const PartCForm = () => {
           </form>
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 

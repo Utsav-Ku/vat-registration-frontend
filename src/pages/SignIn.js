@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingButton from '../components/LoadingButton';
+import Footer from '../components/Footer';
 
 const SignIn = () => {
 
@@ -232,6 +233,7 @@ const SignIn = () => {
                     </form>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
