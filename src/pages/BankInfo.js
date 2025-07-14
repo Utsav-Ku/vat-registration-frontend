@@ -6,6 +6,7 @@ import { bankOptions } from '../constants/dropDowns';
 import LoadingButton from '../components/LoadingButton';
 import CustomTable from '../components/CustomTable';
 import SuccessMessage from '../components/SuccessMessage';
+import Footer from '../components/Footer';
 
 const BankInfo = () => {
   const [bankName, setBankName] = useState("");
@@ -193,7 +194,7 @@ const BankInfo = () => {
   };
 
   return (
-    <>
+    <div>
       <Header />
       <div className="container mt-4 mb-5">
         <div className="card shadow-lg p-4">
@@ -343,7 +344,8 @@ const BankInfo = () => {
 
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 

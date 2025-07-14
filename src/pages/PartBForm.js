@@ -11,6 +11,7 @@ import axios from "axios";
 import LoadingButton from "../components/LoadingButton.js";
 import CustomTable from "../components/CustomTable.js";
 import SuccessMessage from "../components/SuccessMessage.js";
+import Footer from "../components/Footer.js";
 
 const PartBForm = () => {
   const navigate = useNavigate();
@@ -758,6 +759,7 @@ const PartBForm = () => {
 
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

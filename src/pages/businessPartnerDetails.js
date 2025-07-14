@@ -5,6 +5,7 @@ import axios from 'axios';
 import LoadingButton from '../components/LoadingButton';
 import CustomTable from '../components/CustomTable';
 import SuccessMessage from '../components/SuccessMessage';
+import Footer from '../components/Footer';
 
 const BusinessPartnerDetails = () => {
   const navigate = useNavigate();
@@ -708,6 +709,7 @@ const BusinessPartnerDetails = () => {
           </div>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

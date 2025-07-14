@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingButton from '../components/LoadingButton';
+import Footer from '../components/Footer';
 
 const ForgotApplicationNumber = () => {
 
@@ -201,7 +202,7 @@ const ForgotApplicationNumber = () => {
 
                 </div>
             </div>
-
+            <Footer />                    
         </div>
     );
 };

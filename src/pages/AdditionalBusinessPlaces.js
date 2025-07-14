@@ -5,6 +5,7 @@ import axios from "axios";
 import LoadingButton from "../components/LoadingButton";
 import CustomTable from "../components/CustomTable";
 import SuccessMessage from "../components/SuccessMessage";
+import Footer from "../components/Footer";
 
 export default function AdditionalBusinessPlaces() {
   const [formData, setFormData] = useState({
@@ -231,7 +232,7 @@ export default function AdditionalBusinessPlaces() {
   }, []);
 
   return (
-    <>
+    <div>
       <Header />
       <div className="container mt-4 mb-5">
         <div className="card shadow-lg p-4">
@@ -403,6 +404,7 @@ export default function AdditionalBusinessPlaces() {
           </div>
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 import {
   registrationTypes,
@@ -599,6 +600,7 @@ const PartAForm = () => {
           </div>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };
