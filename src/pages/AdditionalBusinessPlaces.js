@@ -387,8 +387,22 @@ export default function AdditionalBusinessPlaces() {
             actions={tableActions}
           />
 
-          <div className="d-flex justify-content-center mt-4" style={{ gap: '30px' }}>
-            <button className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/bank-info')}>Previous</button>
+          {/* Buttons */}
+          <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
+            <button
+              type="button"
+              className="btn px-4"
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+                width: "100%",
+                maxWidth: "250px",
+              }}
+              onClick={() => navigate("/bank-info")}
+            >
+              Previous
+            </button>
+
             <LoadingButton
               type="button"
               loading={loading}

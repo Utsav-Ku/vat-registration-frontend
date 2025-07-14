@@ -322,26 +322,34 @@ const BankInfo = () => {
           />
 
           {/* Navigation Buttons */}
-          <div className="d-flex justify-content-center mt-4">
-            <div className="d-flex" style={{ gap: '30px' }}>
-              <button type="button" className="btn px-4" style={{ backgroundColor: 'rgb(30, 89, 168)', color: 'white', width: '250px' }} onClick={() => navigate('/part-c')}>
-                Previous
-              </button>
-              <LoadingButton
-                type="button"
-                loading={loading}
-                onClick={handleSubmit}
-                style={{
-                  backgroundColor: "#1E59A8",
-                  color: "white",
-                  width: "250px",
-                }}
-              >
-                Save & Continue
-              </LoadingButton>
-            </div>
-          </div>
+          <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
+            <button
+              type="button"
+              className="btn px-4"
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+                width: "100%",
+                maxWidth: "250px",
+              }}
+              onClick={() => navigate("/part-c")}
+            >
+              Previous
+            </button>
 
+            <LoadingButton
+              type="button"
+              loading={loading}
+              onClick={handleSubmit}
+              style={{
+                backgroundColor: "#1E59A8",
+                color: "white",
+                width: "250px",
+              }}
+            >
+              Save & Continue
+            </LoadingButton>
+          </div>
         </div>
       </div>
       <Footer />
