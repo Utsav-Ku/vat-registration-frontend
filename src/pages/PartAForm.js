@@ -10,7 +10,7 @@ import {
   businessStatuses,
   districtsByState,
   occupancies
-} from "../contants/dropdowns";
+} from "../constants/dropDowns.js";
 import LoadingButton from "../components/LoadingButton";
 
 const PartAForm = () => {

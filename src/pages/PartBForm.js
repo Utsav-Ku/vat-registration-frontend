@@ -5,7 +5,7 @@ import {
   districtsByState,
   statutoryAuthorities,
   commodities,
-} from "../contants/dropdowns.js";
+} from "../constants/dropDowns.js";
 import Header from "../components/Header.js";
 import axios from "axios";
 import LoadingButton from "../components/LoadingButton.js";
