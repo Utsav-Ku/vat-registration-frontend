@@ -32,21 +32,6 @@ const ForgotApplicationNumber = () => {
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const speakSecurityPin = () => {
-        if (isSpeaking) return;
-
-        const utterance = new SpeechSynthesisUtterance(securityPinText.split('').join(' '));
-        utterance.lang = 'en-US';
-        utterance.rate = 1;
-
-        setIsSpeaking(true);
-        speechSynthesis.speak(utterance);
-
-        utterance.onend = () => {
-            setIsSpeaking(false);
-        };
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Add validation or API integration
