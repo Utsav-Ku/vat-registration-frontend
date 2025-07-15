@@ -5,6 +5,7 @@ import axios from 'axios';
 import LoadingButton from '../components/LoadingButton';
 import Footer from '../components/Footer';
 import SpeakCaptcha from '../components/SpeakCaptcha';
+import GeneratePinInput from '../components/GeneratePinInput';
 
 const ForgotPassword = () => {
 
@@ -166,25 +167,10 @@ const ForgotPassword = () => {
                         </div>
 
                         {/* Captcha with Refresh */}
-                        <div className="mb-4 row align-items-center">
-                            <label className="col-sm-5 col-form-label fw-bold">Security Pin</label>
-                            <div className="col-sm-7 d-flex align-items-center">
-                                <input 
-                                    type="text" 
-                                    className="form-control text-center me-2" 
-                                    style={{ width: '120px' }} 
-                                    value={securityPinText} 
-                                    readOnly 
-                                />
-
-                                <i 
-                                    className="bi bi-arrow-clockwise" 
-                                    role="button" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={() => setSecurityPinText(generatePin())}
-                                ></i>
-                            </div>
-                        </div>
+                        <GeneratePinInput
+                            pin={securityPinText}
+                            onRegenerate={() => setSecurityPinText(generatePin())}
+                        />
 
                         {/* Audio */}
                         <SpeakCaptcha
