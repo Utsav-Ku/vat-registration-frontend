@@ -97,7 +97,6 @@ const BankInfo = () => {
         alert(data.message || "Failed to save Bank Info.");
       }
     } catch (err) {
-      console.error(err);
       alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
@@ -129,7 +128,6 @@ const BankInfo = () => {
       );
 
       const data = res.data;
-      console.log(data);
       if (data.bankName && data.accountNumber) {
         const entry = {
           bankName: data.bankName ?? "",
@@ -141,7 +139,7 @@ const BankInfo = () => {
         setBankAccounts([entry]);
       }
     } catch (err) {
-      console.error("Failed to fetch bank info data", err);
+      alert("Failed to fetch bank info data.Please try again later.");
     }
   };
 

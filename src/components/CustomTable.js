@@ -1,4 +1,3 @@
-// components/CustomTable.js
 import React from 'react';
 
 const CustomTable = ({ data, columns, actions = [] }) => {

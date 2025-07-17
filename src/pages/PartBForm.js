@@ -18,26 +18,26 @@ const PartBForm = () => {
 
   const [resStreet, setResStreet] = useState("");
   const [resCity, setResCity] = useState("");
-  const [resDistrict, setResDistrict] = useState("WEST TRIPURA");
+  const [resDistrict, setResDistrict] = useState("");
   const [resState, setResState] = useState("TRIPURA");
   const [resPincode, setResPincode] = useState("");
   const [resCountry, setResCountry] = useState("INDIA");
 
   const [permStreet, setPermStreet] = useState("");
   const [permCity, setPermCity] = useState("");
-  const [permDistrict, setPermDistrict] = useState("WEST TRIPURA");
+  const [permDistrict, setPermDistrict] = useState("");
   const [permState, setPermState] = useState("TRIPURA");
   const [permPincode, setPermPincode] = useState("");
   const [permCountry, setPermCountry] = useState("INDIA");
 
-  const [authority, setAuthority] = useState("REGISTER OF COMPANIES");
+  const [authority, setAuthority] = useState("");
   const [econActivity, setEconActivity] = useState("");
   const [commodity, setCommodity] = useState("");
   const [commodityDesc, setCommodityDesc] = useState("");
   const [saleDate, setSaleDate] = useState("");
-  const [vatType, setVatType] = useState("Normal VAT");
+  const [vatType, setVatType] = useState("");
   const [turnover, setTurnover] = useState("");
-  const [returnFreq, setReturnFreq] = useState("Monthly");
+  const [returnFreq, setReturnFreq] = useState("");
 
   const [commodityTable, setCommodityTable] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -113,8 +113,6 @@ const PartBForm = () => {
       filingFrequency: returnFreq
     };
 
-    console.log("Final Payload:", JSON.stringify(payload, null, 2));
-
     try {
       const { data } = await axios.post(
         "https://tax-nic-1y21.onrender.com/registration/part-b",
@@ -188,8 +186,6 @@ const PartBForm = () => {
           },
         }
       );
-
-      console.log("Fetched Part B Data:", data);
 
       // ====== Commodity ======
       const commodity = data?.commodity || {};
@@ -267,7 +263,6 @@ const PartBForm = () => {
       }
 
     } catch (error) {
-      console.error("Error fetching Part B data:", error.message);
       alert("Failed to load Part B data. Please try again.");
     }
   };

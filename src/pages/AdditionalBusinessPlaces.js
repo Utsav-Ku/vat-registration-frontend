@@ -145,9 +145,6 @@ export default function AdditionalBusinessPlaces() {
       edrDate: records[0].fdrDate,
     };
 
-
-    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
-
     try {
       const { data } = await axios.post(
         "https://tax-nic-1y21.onrender.com/registration/additional-business-place",
@@ -197,8 +194,6 @@ export default function AdditionalBusinessPlaces() {
       }
     );
 
-    console.log("Fetched additional business places:", response.data);
-
     if (Array.isArray(response.data)) {
       const mapped = response.data.map((item) => ({
         applicantName: item.applicantName || "",
@@ -220,7 +215,6 @@ export default function AdditionalBusinessPlaces() {
       setRecords(mapped);
     }
   } catch (error) {
-    console.error("Error fetching additional business places:", error);
     alert("Failed to fetch additional business places. Please try again later.");
   }
 };

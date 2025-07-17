@@ -70,7 +70,7 @@ const PartCForm = () => {
       }
 
     } catch (err) {
-      console.error("Error fetching Part C data:", err);
+      alert("Failed to load Part C data. Please try again.")
     }
   };
 
@@ -90,7 +90,7 @@ const PartCForm = () => {
     }
 
     const applicationNumber = localStorage.getItem("applicationNumber");
-    const token = localStorage.getItem("token"); // 👈 Get token from localStorage
+    const token = localStorage.getItem("token");
 
     if (!applicationNumber) {
       alert("Application number not found. Please complete Part A first.");
@@ -101,8 +101,6 @@ const PartCForm = () => {
       alert("Authorization token not found. Please login again.");
       return;
     }
-
-    console.log(token);
 
     const payload = {
       applicationNumber,
@@ -137,7 +135,7 @@ const PartCForm = () => {
         payload,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 👈 Send token in header
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
           }
         }
@@ -150,7 +148,6 @@ const PartCForm = () => {
         alert(res.data.message || "Failed to save Part-C.");
       }
     } catch (error) {
-      console.error(error);
       alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);

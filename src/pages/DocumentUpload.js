@@ -129,7 +129,6 @@ const DocumentUpload = () => {
             }
 
         } catch (error) {
-            console.error("Upload error:", error);
             alert(
                 "An error occurred while submitting the form. Please try again."
             );
@@ -186,7 +185,7 @@ const DocumentUpload = () => {
                     name: mapDocTypeToLabel(doc.docType),
                     type: getFileExtension(doc.filename),
                     size: doc.docSize,
-                    file: null, // no actual File object when fetched
+                    file: null,
                     filename: doc.filename,
                     uploadedOn: doc.uploadedOn
                 }));
@@ -195,7 +194,6 @@ const DocumentUpload = () => {
 
         } catch (error) {
             alert("Failed to fetch uploaded documents. Please try again later.");
-            console.error("Error fetching documents:", error);
         }
     }
 

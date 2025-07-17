@@ -179,7 +179,6 @@ const BusinessPartnerDetails = () => {
       }
 
     } catch (error) {
-      console.error("Error submitting business partner details:", error);
       alert("An error occurred while submitting the form. Please try again.");
     } finally {
       setLoading(false);
@@ -195,8 +194,6 @@ const BusinessPartnerDetails = () => {
       navigate("/sign-in");
       return;
     }
-
-    console.log(token);
 
     if (!applicationNumber) {
       alert("Application number not found. Please complete Part A first.");
@@ -215,7 +212,6 @@ const BusinessPartnerDetails = () => {
       );
 
       const data = response.data[0];
-      console.log(data);
       if (data) {
         setLocality(data.area);
         setPartnerType(data.partnerType);
@@ -239,7 +235,6 @@ const BusinessPartnerDetails = () => {
       }
 
     } catch (error) {
-      console.error("Failed to fetch partner details:", error);
       alert("Unable to load previously saved data.");
     }
   };

@@ -94,9 +94,6 @@ const PartAForm = () => {
       }
     };
 
-    console.log("Submitting Payload:", JSON.stringify(payload, null, 2));
-
-
     try {
       const token = localStorage.getItem("token");
       if (token) {
@@ -164,7 +161,6 @@ const PartAForm = () => {
       );
 
       const data = res.data;
-      console.log("Fetched Part A Data:", data);
       if (!data) {
         alert("No saved data found for this application.");
         return;
@@ -198,7 +194,6 @@ const PartAForm = () => {
       });
 
     } catch (err) {
-      console.error("Error fetching Part A data:", err);
       alert("Failed to load Part A data. Please try again.");
     }
   };
