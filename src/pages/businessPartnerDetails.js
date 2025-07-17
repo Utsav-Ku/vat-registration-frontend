@@ -111,7 +111,6 @@ const BusinessPartnerDetails = () => {
 
     setTableRows([...tableRows, newRow]);
     setSuccessMessage("Details Inserted Successfully !!");
-    navigate("/upload-document");
   };
 
   const handleSubmission = async (e) => {
@@ -215,28 +214,28 @@ const BusinessPartnerDetails = () => {
         }
       );
 
-      const data = response.data;
+      const data = response.data[0];
       console.log(data);
       if (data) {
-        setPartnerType(data.partnerType || '');
-        setPersonName(data.name || '');
-        setFatherName(data.fathersName || '');
-        setDob(data.dateOfBirth || '');
-        setDesignation(data.designation || '');
-        setEducation(data.qualification || '');
-        setPan(data.pan || '');
-        setPresentAddress(data.addressLine1 || '');
-        setLocality(data.area || '');
-        setVillage(data.village || '');
-        setPermanentAddress(data.permanentAddress1 || '');
-        setTel(data.telephone || '');
-        setFax(data.fax || '');
-        setEmail(data.email || '');
-        setInterest(data.interestPercent?.toString() || '');
-        setEntryDate(data.entryDate || '');
-        setExitDate(data.exitDate || '');
-        setVoterId(data.voterId || '');
-        setResidentialCert(data.residentialCertNo || '');
+        setLocality(data.area);
+        setPartnerType(data.partnerType);
+        setDob(data.dateOfBirth);
+        setDesignation(data.designation);
+        setFatherName(data.fathersName);
+        setPersonName(data.name);
+        setPan(data.pan);
+        setInterest(data.interestPercent);
+        setPermanentAddress(data.permanentAddress);
+        setPresentAddress(data.presentAddress);
+        setEducation(data.qualification);
+        setVillage(data.village);
+        setTel(data.contact.telephone);
+        setFax(data.contact.fax);
+        setEmail(data.contact.email);
+        setResidentialCert(data.electoralDetails.residentialCertNo);
+        setVoterId(data.electoralDetails.voterId);
+        setEntryDate(data.partnershipDates.entryDate);
+        setExitDate(data.partnershipDates.entryDate);
       }
 
     } catch (error) {
@@ -697,7 +696,7 @@ const BusinessPartnerDetails = () => {
             <LoadingButton
               type="button"
               loading={loading}
-              onClick={handleSubmit}
+              onClick={handleSubmission}
               style={{
                 backgroundColor: "#1E59A8",
                 color: "white",
