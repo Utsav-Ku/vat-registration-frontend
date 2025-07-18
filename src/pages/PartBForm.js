@@ -187,6 +187,8 @@ const PartBForm = () => {
         }
       );
 
+      console.log(data);
+      setAuthority(data.statutoryAuthority);
       // ====== Commodity ======
       const commodity = data?.commodity || {};
       setCommodityDesc(commodity.description || "");
